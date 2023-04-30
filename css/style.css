@@ -1,6 +1,11 @@
 body {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: auto;
+}
+
+.logo {
+  width: 268px;
+  height: 93px;
 }
 
 /*# sourceMappingURL=style.css.map */
