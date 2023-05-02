@@ -16,9 +16,17 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Récupération des données du fichier recipes.js
 
-* 
+* Intégrer les maquettes en CSS et les media queries
 
-* 
+*
+
+*
+
+*
+
+* Animations
+
+* Gérer l'accessibilité du site (lecteur d'écran et clavier)
 
 * Revue de code
 

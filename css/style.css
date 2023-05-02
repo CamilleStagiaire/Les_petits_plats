@@ -8,4 +8,17 @@ body {
   height: 93px;
 }
 
+.form-label {
+  display: none;
+}
+
+article {
+  display: flex;
+  justify-content: center;
+}
+
+.container-form, .container-dropdown, .container-recipes {
+  margin: 20px 100px;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -1,6 +1,5 @@
 class Recipe {
     /**
-     * 
      * @param {number} id 
      * @param {string} name 
      * @param {number} servings 
@@ -23,19 +22,20 @@ class Recipe {
       this.id = id;
       this.name = name;
       this.servings = servings;
-      this.ingredients = ingredients;
+      this.ingredients = ingredients.map(
+          (ingredient) => new Ingredient(ingredient.ingredient, ingredient.quantity, ingredient.unit)
+      );
       this.time = time;
       this.description = description;
       this.appliance = appliance;
       this.utensils = utensils;
     }
-  
+
     /**
-     * Crée une liste d'objets Recipe à partir des données fournies
      * @param {Array<Object>} recipesData 
      * @returns {Array<Recipe>}
      */
-    static createRecipeObjects(recipesData) {
+    static createRecipesFromData(recipesData) {
       return recipesData.map(
         (recipeData) =>
           new Recipe(
@@ -50,7 +50,34 @@ class Recipe {
           )
       );
     }
-  }
 
-  export { Recipe };
-  
+    /**
+     * Récupère tous les ingrédients de toutes les recettes
+     * @param {Array<Recipe>} recipeObjects
+     * @returns {Array<Ingredient>}
+     */
+    // static getAllIngredients(recipeObjects) {
+    //     const allIngredients = [];
+    //     recipeObjects.forEach((recipe) => {
+    //         recipe.ingredients.forEach((ingredient) => {
+    //             allIngredients.push(ingredient);
+    //         });
+    //     });
+    //     return allIngredients;
+    // }
+}
+
+class Ingredient {
+    /**
+     * @param {string} ingredient
+     * @param {number} quantity
+     * @param {string=} unit
+     */
+    constructor(ingredient, quantity, unit = "") {
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
+}
+
+export { Recipe, Ingredient };

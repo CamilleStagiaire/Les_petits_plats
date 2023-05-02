@@ -7,3 +7,21 @@ body {
    width: 268px;
    height: 93px;
 }
+
+.form-label {
+   display: none;
+ }
+
+article {
+   display: flex;
+   justify-content: center;
+}
+
+
+.container {
+   &-form, &-dropdown, &-recipes  {
+      margin: 20px 100px;
+   }
+
+}
+
