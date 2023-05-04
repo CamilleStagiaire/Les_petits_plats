@@ -21,12 +21,13 @@
 		</header>
 
 		<main id="main" class="container mx-auto">
+
 			<div class="row container-form">
 				<form id="search-form">
 					<label for="search" class="form-label">Email address</label>
 					<div class="search-form-input">
 						<input type="text" id="search" class="form-control" placeholder="Rechercher une recette" aria-label="Rechercher" aria-describedby="search">
-						<span class="search-icon">
+						<span class="search-form-icon">
 							<i class="bi bi-search"></i>
 						</span>
 					</div>
@@ -34,10 +35,11 @@
 			</div>
 
 			<div class="row container-dropdown">
-				<div id="dropdown" class="container-dropdown-btn">
-					<button class="btn btn-primary dropdown-toggle text-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				<div class="container-dropdown-btn" id="ingredients-dropdown">
+					<button class="btn btn-primary dropdown-toggle text-white" type="button" id="ingredientsButton" data-bs-toggle="dropdown" aria-expanded="false"  data-text="Ingrédients">
 						Ingrédients
 						<i class="bi bi-chevron-down"></i>
+						<input type="text" class="search-input" placeholder="Rechercher">
 					</button>
 					<ul class="dropdown-menu btn-primary-open" aria-labelledby="dropdownMenuButton1">
 						<li>
@@ -51,9 +53,11 @@
 						</li>
 					</ul>
 				</div>
-				<div class="container-dropdown-btn">
-					<button class="btn btn-success dropdown-toggle text-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				<div class="container-dropdown-btn" id="appareils-dropdown">
+					<button class="btn btn-success dropdown-toggle text-white" type="button" id="appareilsButton" data-bs-toggle="dropdown" aria-expanded="false" data-text="Appareils">
 						Appareils
+						<i class="bi bi-chevron-down"></i>
+						<input type="text" class="search-input" placeholder="Rechercher">
 					</button>
 					<ul class="dropdown-menu btn-success-open" aria-labelledby="dropdownMenuButton1">
 						<li>
@@ -67,9 +71,11 @@
 						</li>
 					</ul>
 				</div>
-				<div class="container-dropdown-btn">
-					<button class="btn btn-danger dropdown-toggle text-white" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				<div class="container-dropdown-btn" id="ustensiles-dropdown">
+					<button class="btn btn-danger dropdown-toggle text-white" type="button" id="ustensilesButton" data-bs-toggle="dropdown" aria-expanded="false"  data-text="Ustensiles">
 						Ustensiles
+						<i class="bi bi-chevron-down"></i>
+						<input type="text" class="search-input" placeholder="Rechercher">
 					</button>
 					<ul class="dropdown-menu btn-danger-open" aria-labelledby="dropdownMenuButton1">
 						<li>

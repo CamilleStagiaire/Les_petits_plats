@@ -1,33 +1,30 @@
-/* -------------------------
-MEDIA QUERIES 
-----------------------------*/
-// Largeur max
+// Largeurs max
  $max-width: 1440px;
+ $max-width-modal: 1200px;
 
-// // breakpoints
-// $md: 768px;
-// $lg: 992px;
 
-// $medium-up: "only screen and (min-width: #{$medium})";
-// $large-up: "only screen and (min-width: #{$large})";
 // // les polices
  $font-text: 'Lato', sans-serif;
  $font-description: 'Roboto', cursive;
 
 //les couleurs
 $primary: #3282F7;
-
 $success: #68D9A4;
-
 $danger: #ED6454;
+$color-bodyCard: #E7E7E7;
+$color-bodyImage: #C7BEBE;
 
 // border-radius
 $bordeur-radius:5px;
 
+// mise en forme des dropdowns
+$button-colors: (
+    primary: $primary,
+    success: $success,
+    danger: $danger
+ );
 
 
 
-$color-bodyCard: #E7E7E7;
-$color-bodyImage: #C7BEBE;
 
 

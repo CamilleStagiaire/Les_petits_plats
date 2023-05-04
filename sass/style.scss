@@ -12,23 +12,10 @@ body {
    height: 93px;
 }
 
-//les icones 
-.bi-search {
-   font-size: 30px;
-}
-
-.bi-clock {
-   padding-right: 10px;
-}
-
-.bi-chevron-down,
-.bi-chevron-up {
-   padding-left: 20px;
-}
-
 .container {
    padding: 0;
 
+   /*Formulaire de recherche*/
    &-form {
       margin: 17px 40px;
 
@@ -51,25 +38,26 @@ body {
          &-input {
             position: relative;
          }
+
+         &-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+
+            .bi-search {
+               font-size: 30px;
+            }
+         }
       }
 
-      .form-label {
+      label {
          display: none;
       }
    }
 
-   .search-icon {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: none;
-   }
-
-   #search {
-      padding-right: 40px;
-   }
-
+   /*Dropdowns*/
    &-dropdown {
       display: flex;
       flex-direction: column;
@@ -89,60 +77,94 @@ body {
          width: 50%;
       }
 
+      &-btn {
+         width: 33%;
+      }
+
+      // bouton de titre des dropdowns
       button {
          text-align: left;
          font-weight: bold;
          height: 69px;
          width: 170px;
          font-size: 18px;
+      }
 
-         @include media-breakpoint-up(lg) {}
+      .dropdown-toggle {
+         position: relative;
+         background-color: $primary;
 
          &:hover {
-            border-radius: 0;
+            opacity: 0.8;
+         }
+
+         .bi-chevron-down,
+         .bi-chevron-up {
+            position: absolute;
+            right: 10px;
          }
       }
 
-      ul {
-         width: 170px;
-         border: none;
-         transform: translate3d(12px, 68px, 0px) !important;
-         border-radius: 0;
-         padding: 0px;
+      .dropdown-toggle {
+         &.btn-primary {
+            @extend .btn-primary-open;
+         }
+
+         &.btn-success {
+            @extend .btn-success-open;
+         }
+
+         &.btn-danger {
+            @extend .btn-danger-open;
+         }
       }
 
-      a {
-         color: white;
-      }
-
-      // mise en forme des dropdown
       .btn {
-         &-primary {
-            &-open {
-               background-color: $primary;
-            }
-         }
 
-         &-success {
-            &-open {
-               background-color: $success;
-            }
-         }
+         @each $color-name,
+         $color-value in $button-colors {
+            &-#{$color-name}-open {
+               background-color: $color-value;
 
-         &-danger {
-            &-open {
-               background-color: $danger;
+               a {
+                  &:hover {
+                     background-color: $color-value;
+                  }
+               }
             }
          }
       }
 
-      //changement de l'icone dropdown
+      // suppression du chevron de dropdown par defaut
       .dropdown-toggle::after {
          display: none;
       }
 
-      &-btn {
-         width: 33%;
+      // barre de recherche des dropdowns
+      .search-input {
+         display: none;
+         width: 100%;
+         border: none;
+         outline: none;
+         background: transparent;
+         color: white;
+
+         &::placeholder {
+            color: white;
+         }
+      }
+
+      // style des listes des dropdowns
+      ul {
+         margin: -7px 0 !important;
+         width: 170px;
+         border: none;
+         border-radius: 0 0 $border-radius $border-radius;
+         padding-bottom: 15px;
+      }
+
+      a {
+         color: white;
       }
    }
 
@@ -169,7 +191,13 @@ body {
       &-time {
          font-weight: bold;
          display: flex;
-         justify-content: flex-end;
+
+         @include media-breakpoint-up(md) {
+            justify-content: flex-end;
+         }
+         .bi-clock {
+            padding-right: 5px;
+         }
       }
    }
 
@@ -184,25 +212,31 @@ body {
    }
 
    &-text {
+      font-size: 12px;
+
       &-li {
          overflow: hidden;
          text-overflow: ellipsis;
          white-space: nowrap;
       }
-
-      &-overflow {
-         display: -webkit-box;
-         -webkit-line-clamp: 6;
-         -webkit-box-orient: vertical;
-         overflow: hidden;
-         font-size: 12px;
+      &-ingredients {
+         font-weight: bold;
       }
-
+      &-description {
+         font-family: $font-description;
+      }
       ul {
          list-style-type: none;
          padding-left: 0;
       }
    }
+}
+
+.overflow {
+   display: -webkit-box;
+   -webkit-line-clamp: 6;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
 }
 
 // modale de recettes
@@ -213,27 +247,28 @@ body {
    left: 0;
    top: 0;
    background-color: rgba(255, 255, 255, .5);
-}
 
-.modal-content {
-   background-color: #F8D6D6;
-   margin: 15% auto;
-   padding: 20px;
-   border: 1px solid #888;
-   width: 80%;
-}
+   &-content {
+      max-width: $max-width-modal;
+      background-color: #F8D6D6;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
 
-.close {
-   float: right;
-   font-size: 28px;
-   font-weight: bold;
-}
+      .close {
+         float: right;
+         font-size: 28px;
+         font-weight: bold;
+      }
 
-.close:hover,
-.close:focus {
-   color: #000;
-   text-decoration: none;
-   cursor: pointer;
+      .close:hover,
+      .close:focus {
+         color: #000;
+         text-decoration: none;
+         cursor: pointer;
+      }
+   }
 }
 
 footer {

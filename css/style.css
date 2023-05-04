@@ -1,7 +1,4 @@
 @charset "UTF-8";
-/* -------------------------
-MEDIA QUERIES 
-----------------------------*/
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -10733,21 +10730,10 @@ body {
   height: 93px;
 }
 
-.bi-search {
-  font-size: 30px;
-}
-
-.bi-clock {
-  padding-right: 10px;
-}
-
-.bi-chevron-down,
-.bi-chevron-up {
-  padding-left: 20px;
-}
-
 .container {
   padding: 0;
+  /*Formulaire de recherche*/
+  /*Dropdowns*/
 }
 .container-form {
   margin: 17px 40px;
@@ -10767,18 +10753,18 @@ body {
 .container-form .search-form-input {
   position: relative;
 }
-.container-form .form-label {
-  display: none;
-}
-.container .search-icon {
+.container-form .search-form-icon {
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  pointer-events: none;
+  cursor: pointer;
 }
-.container #search {
-  padding-right: 40px;
+.container-form .search-form-icon .bi-search {
+  font-size: 30px;
+}
+.container-form label {
+  display: none;
 }
 .container-dropdown {
   display: flex;
@@ -10802,6 +10788,9 @@ body {
     width: 50%;
   }
 }
+.container-dropdown-btn {
+  width: 33%;
+}
 .container-dropdown button {
   text-align: left;
   font-weight: bold;
@@ -10809,33 +10798,59 @@ body {
   width: 170px;
   font-size: 18px;
 }
-.container-dropdown button:hover {
-  border-radius: 0;
-}
-.container-dropdown ul {
-  width: 170px;
-  border: none;
-  transform: translate3d(12px, 68px, 0px) !important;
-  border-radius: 0;
-  padding: 0px;
-}
-.container-dropdown a {
-  color: white;
-}
-.container-dropdown .btn-primary-open {
+.container-dropdown .dropdown-toggle {
+  position: relative;
   background-color: #3282F7;
 }
-.container-dropdown .btn-success-open {
+.container-dropdown .dropdown-toggle:hover {
+  opacity: 0.8;
+}
+.container-dropdown .dropdown-toggle .bi-chevron-down,
+.container-dropdown .dropdown-toggle .bi-chevron-up {
+  position: absolute;
+  right: 10px;
+}
+.container-dropdown .btn-primary-open, .container-dropdown .dropdown-toggle.btn-primary {
+  background-color: #3282F7;
+}
+.container-dropdown .btn-primary-open a:hover, .container-dropdown .dropdown-toggle.btn-primary a:hover {
+  background-color: #3282F7;
+}
+.container-dropdown .btn-success-open, .container-dropdown .dropdown-toggle.btn-success {
   background-color: #68D9A4;
 }
-.container-dropdown .btn-danger-open {
+.container-dropdown .btn-success-open a:hover, .container-dropdown .dropdown-toggle.btn-success a:hover {
+  background-color: #68D9A4;
+}
+.container-dropdown .btn-danger-open, .container-dropdown .dropdown-toggle.btn-danger {
+  background-color: #ED6454;
+}
+.container-dropdown .btn-danger-open a:hover, .container-dropdown .dropdown-toggle.btn-danger a:hover {
   background-color: #ED6454;
 }
 .container-dropdown .dropdown-toggle::after {
   display: none;
 }
-.container-dropdown-btn {
-  width: 33%;
+.container-dropdown .search-input {
+  display: none;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+}
+.container-dropdown .search-input::placeholder {
+  color: white;
+}
+.container-dropdown ul {
+  margin: -7px 0 !important;
+  width: 170px;
+  border: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  padding-bottom: 15px;
+}
+.container-dropdown a {
+  color: white;
 }
 .container-recipes {
   margin: 25px;
@@ -10857,7 +10872,14 @@ body {
 .card-body-time {
   font-weight: bold;
   display: flex;
-  justify-content: flex-end;
+}
+@media (min-width: 768px) {
+  .card-body-time {
+    justify-content: flex-end;
+  }
+}
+.card-body-time .bi-clock {
+  padding-right: 5px;
 }
 .card-title h5, .card-title .h5 {
   font-size: 18px;
@@ -10866,21 +10888,30 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.card-text {
+  font-size: 12px;
+}
 .card-text-li {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.card-text-overflow {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-size: 12px;
+.card-text-ingredients {
+  font-weight: bold;
+}
+.card-text-description {
+  font-family: "Roboto", cursive;
 }
 .card-text ul {
   list-style-type: none;
   padding-left: 0;
+}
+
+.overflow {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .modal {
@@ -10891,23 +10922,21 @@ body {
   top: 0;
   background-color: rgba(255, 255, 255, 0.5);
 }
-
 .modal-content {
+  max-width: 1200px;
   background-color: #F8D6D6;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
 }
-
-.close {
+.modal-content .close {
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
-
-.close:hover,
-.close:focus {
+.modal-content .close:hover,
+.modal-content .close:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
