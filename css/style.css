@@ -10844,10 +10844,8 @@ body {
 }
 .container-dropdown ul {
   margin: -7px 0 !important;
-  width: 170px;
   border: none;
   border-radius: 0 0 0.375rem 0.375rem;
-  padding-bottom: 15px;
 }
 .container-dropdown a {
   color: white;
@@ -10857,6 +10855,41 @@ body {
 }
 .container-recipes article {
   margin-bottom: 50px;
+}
+
+.dropdown-menu.open {
+  width: 215px;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 360px;
+  overflow-y: auto;
+}
+@media (min-width: 768px) {
+  .dropdown-menu.open {
+    width: 667px;
+  }
+}
+.dropdown-menu.open li {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 768px) {
+  .dropdown-menu.open li {
+    width: 33.3333333333%;
+  }
+}
+.dropdown-menu.open a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dropdown-toggle.active {
+  width: 215px;
+}
+@media (min-width: 768px) {
+  .dropdown-toggle.active {
+    width: 667px;
+  }
 }
 
 .card {
@@ -10945,6 +10978,13 @@ body {
 footer .logo {
   width: 178px;
   height: 62px;
+}
+
+.container-dropdown.active {
+  width: 100%;
+}
+.container-dropdown.active .container-dropdown-btn.active {
+  flex-grow: 2;
 }
 
 /*# sourceMappingURL=style.css.map */

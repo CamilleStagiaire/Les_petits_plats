@@ -157,11 +157,9 @@ body {
       // style des listes des dropdowns
       ul {
          margin: -7px 0 !important;
-         width: 170px;
          border: none;
          border-radius: 0 0 $border-radius $border-radius;
-         padding-bottom: 15px;
-      }
+     }
 
       a {
          color: white;
@@ -177,6 +175,47 @@ body {
    }
 }
 
+// affichage des éléments dans les dropdowns
+.dropdown {
+   &-menu {
+     &.open {
+       width: 215px;
+       display: flex;
+       flex-wrap: wrap;
+       max-height: calc(10 * 36px);
+       overflow-y: auto;
+ 
+       @include media-breakpoint-up(md) {
+         width: 667px;
+       }
+ 
+       li {
+         width: calc(100% / 1);
+         box-sizing: border-box;
+ 
+         @include media-breakpoint-up(md) {
+           width: calc(100% / 3);
+         }
+       }
+ 
+       a {
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+       }
+     }
+   }
+ 
+   &-toggle {
+     &.active {
+       width: 215px;
+       @include media-breakpoint-up(md) {
+         width: 667px;
+       }
+     }
+   }
+ }
+ 
 // mise en forme des articles
 .card {
    border: none;
@@ -195,6 +234,7 @@ body {
          @include media-breakpoint-up(md) {
             justify-content: flex-end;
          }
+
          .bi-clock {
             padding-right: 5px;
          }
@@ -219,12 +259,15 @@ body {
          text-overflow: ellipsis;
          white-space: nowrap;
       }
+
       &-ingredients {
          font-weight: bold;
       }
+
       &-description {
          font-family: $font-description;
       }
+
       ul {
          list-style-type: none;
          padding-left: 0;
@@ -277,3 +320,17 @@ footer {
       height: 62px;
    }
 }
+
+.container-dropdown {
+   // ...
+   
+   &.active {
+     width: 100%;
+ 
+     .container-dropdown-btn {
+       &.active {
+         flex-grow: 2;
+       }
+     }
+   }
+ }

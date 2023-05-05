@@ -12,10 +12,17 @@ class App {
 
     // Afficher les cartes de recette
     this.displayRecipes(recipeObjects);
-    console.log(recipeObjects);
+    
+    // Récupérer les ingrédients uniques
+    const uniqueIngredients = Recipe.getAllIngredients(recipeObjects);
+    const uniqueAppliances = Recipe.getAllAppliances(recipeObjects);
+    const uniqueUstensils = Recipe.getAllUstensils(recipeObjects);
+    console.log(uniqueIngredients);
+    console.log(uniqueAppliances);
+    console.log(uniqueUstensils);
 
     // Initialiser les dropdowns
-    Dropdown.initDropdowns();
+    Dropdown.initDropdowns(uniqueIngredients, uniqueAppliances, uniqueUstensils);
 
     // affichage de la recette dans une modale
     const recipeDisplays = document.querySelectorAll('.article');

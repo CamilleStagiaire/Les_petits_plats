@@ -7,7 +7,7 @@ class Recipe {
      * @param {number} time 
      * @param {string} description 
      * @param {string} appliance 
-     * @param {Array<string>} utensils 
+     * @param {Array<string>} ustensils 
      */
     constructor(
       id,
@@ -17,7 +17,7 @@ class Recipe {
       time,
       description,
       appliance,
-      utensils
+      ustensils
     ) {
       this.id = id;
       this.name = name;
@@ -28,7 +28,7 @@ class Recipe {
       this.time = time;
       this.description = description;
       this.appliance = appliance;
-      this.utensils = utensils;
+      this.ustensils = ustensils;
     }
 
     /**
@@ -46,25 +46,55 @@ class Recipe {
             recipeData.time,
             recipeData.description,
             recipeData.appliance,
-            recipeData.utensils
+            recipeData.ustensils
           )
       );
     }
 
     /**
-     * Récupère tous les ingrédients de toutes les recettes
+     * Récupère tous les ingrédients uniques et triés de toutes les recettes
      * @param {Array<Recipe>} recipeObjects
-     * @returns {Array<Ingredient>}
+     * @returns {Array<string>} - Un tableau d'ingrédients uniques et triés
      */
-    // static getAllIngredients(recipeObjects) {
-    //     const allIngredients = [];
-    //     recipeObjects.forEach((recipe) => {
-    //         recipe.ingredients.forEach((ingredient) => {
-    //             allIngredients.push(ingredient);
-    //         });
-    //     });
-    //     return allIngredients;
-    // }
+    static getAllIngredients(recipeObjects) {
+      const allIngredients = new Set();
+      recipeObjects.forEach(recipe => {
+        recipe.ingredients.forEach(ingredient => {
+          allIngredients.add(ingredient.ingredient.toLowerCase());
+        });
+      });
+      return Array.from(allIngredients).sort();
+    }
+
+  /**
+   * Récupère tous les appareils uniques et triés de toutes les recettes
+   * @param {Array<Recipe>} recipeObjects 
+   * @returns {Array<string>} 
+   */
+  static getAllAppliances(recipeObjects) {
+    const allAppliances = new Set();
+    recipeObjects.forEach(recipe => {
+      allAppliances.add(recipe.appliance.toLowerCase());
+    });
+    return Array.from(allAppliances).sort();
+  }
+
+  /**
+   * Récupère tous les ustensiles uniques et triés de toutes les recettes
+   * @param {Array<Recipe>} recipeObjects 
+   * @returns {Array<string>}
+   */
+  static getAllUstensils(recipeObjects) {
+    const allUstensils = new Set();
+    recipeObjects.forEach(recipe => {
+      if (recipe.ustensils) { // Ajoutez cette vérification
+        recipe.ustensils.forEach(ustensil => {
+          allUstensils.add(ustensil.toLowerCase());
+        });
+      }
+    });
+    return Array.from(allUstensils).sort();
+  }
 }
 
 class Ingredient {
