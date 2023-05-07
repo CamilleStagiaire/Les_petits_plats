@@ -1,12 +1,12 @@
 class DisplayRecipe {
-    constructor(recipe) {
-      this.recipe = recipe;
-    }
-  
-    openModal() {
-        const modal = document.createElement('div');
-        modal.classList.add('modal');
-        modal.innerHTML = `
+  constructor(recipe) {
+    this.recipe = recipe;
+  }
+
+  openModal() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `
           <div class="modal-content">
             <span class="close">&times;</span>
             <div class="d-flex-column justify-content-between">
@@ -34,15 +34,22 @@ class DisplayRecipe {
             </div>
           </div>
         `;
-      
-        document.body.appendChild(modal);
-      
-        // Gérer la fermeture de la modale
-        const closeButton = modal.querySelector('.close');
-        closeButton.addEventListener('click', () => {
-          document.body.removeChild(modal);
-        });
-      }
+
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 0);
+
+    const closeButton = modal.querySelector('.close');
+    closeButton.addEventListener('click', () => {
+      modal.classList.remove('show');
+      modal.classList.add('hide');
+      setTimeout(() => {
+        document.body.removeChild(modal);
+      }, 500);
+    });
   }
-  
+}
+
 export { DisplayRecipe }

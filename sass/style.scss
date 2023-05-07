@@ -65,7 +65,7 @@ body {
       margin: 17px 40px 80px 40px;
 
       @include media-breakpoint-up(md) {
-         width: 93%;
+         width: 80%;
          flex-direction: row;
       }
 
@@ -159,10 +159,15 @@ body {
          margin: -7px 0 !important;
          border: none;
          border-radius: 0 0 $border-radius $border-radius;
-     }
+      }
 
       a {
          color: white;
+      }
+
+      &.active {
+         display: flex;
+         flex-wrap: nowrap;
       }
    }
 
@@ -178,44 +183,95 @@ body {
 // affichage des éléments dans les dropdowns
 .dropdown {
    &-menu {
-     &.open {
-       width: 215px;
-       display: flex;
-       flex-wrap: wrap;
-       max-height: calc(10 * 36px);
-       overflow-y: auto;
- 
-       @include media-breakpoint-up(md) {
-         width: 667px;
-       }
- 
-       li {
-         width: calc(100% / 1);
-         box-sizing: border-box;
- 
+      display: block;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      inset: auto auto auto auto !important;
+      margin: 0 !important;
+      transform: none !important;
+      width: 170px;
+
+      &.show {
+         opacity: 1;
+         width: 215px;
+         display: flex;
+         flex-wrap: wrap;
+         max-height: calc(10 * 36px);
+         overflow-y: auto;
+
          @include media-breakpoint-up(md) {
-           width: calc(100% / 3);
+            width: 230px;
          }
-       }
- 
-       a {
-         white-space: nowrap;
-         overflow: hidden;
-         text-overflow: ellipsis;
-       }
-     }
+
+         @include media-breakpoint-up(lg) {
+            width: 470px;
+         }
+
+         @include media-breakpoint-up(xl) {
+            width: 667px;
+         }
+
+         li {
+
+            width: calc(100% / 1);
+            box-sizing: border-box;
+
+            @include media-breakpoint-up(lg) {
+               width: calc(100% / 2);
+            }
+
+            @include media-breakpoint-up(xl) {
+               width: calc(100% / 3);
+            }
+         }
+
+         a {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+         }
+      }
    }
- 
+
    &-toggle {
-     &.active {
-       width: 215px;
-       @include media-breakpoint-up(md) {
-         width: 667px;
-       }
-     }
+      transition: all 0.3s;
+
+      &.active {
+         width: 215px;
+
+         @include media-breakpoint-up(md) {
+            width: 230px;
+         }
+
+         @include media-breakpoint-up(lg) {
+            width: 470px;
+         }
+
+         @include media-breakpoint-up(xl) {
+            width: 667px;
+         }
+      }
    }
- }
- 
+}
+
+// style des boutons à l'ouverure d'un dropdown
+.margins {
+   transition: all 0.3s;
+
+   @include media-breakpoint-up(md) {
+      margin-left: 65px;
+   }
+
+   @include media-breakpoint-up(lg) {
+      margin-left: 300px;
+   }
+
+   @include media-breakpoint-up(xl) {
+      margin-left: 500px;
+   }
+}
+
 // mise en forme des articles
 .card {
    border: none;
@@ -290,6 +346,9 @@ body {
    left: 0;
    top: 0;
    background-color: rgba(255, 255, 255, .5);
+   opacity: 0;
+   visibility: hidden;
+   transition: opacity 0.3s;
 
    &-content {
       max-width: $max-width-modal;
@@ -312,6 +371,17 @@ body {
          cursor: pointer;
       }
    }
+
+   &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1.1);
+   }
+
+   &.hide {
+      transform: scale(0.9);
+   }
+
 }
 
 footer {
@@ -320,17 +390,3 @@ footer {
       height: 62px;
    }
 }
-
-.container-dropdown {
-   // ...
-   
-   &.active {
-     width: 100%;
- 
-     .container-dropdown-btn {
-       &.active {
-         flex-grow: 2;
-       }
-     }
-   }
- }
