@@ -17,9 +17,9 @@ class App {
     const uniqueIngredients = Recipe.getAllIngredients(recipeObjects);
     const uniqueAppliances = Recipe.getAllAppliances(recipeObjects);
     const uniqueUstensils = Recipe.getAllUstensils(recipeObjects);
-    console.log(uniqueIngredients);
-    console.log(uniqueAppliances);
-    console.log(uniqueUstensils);
+    //console.log(uniqueIngredients);
+    //console.log(uniqueAppliances);
+    //console.log(uniqueUstensils);
 
     // Initialiser les dropdowns
     Dropdown.initDropdowns(uniqueIngredients, uniqueAppliances, uniqueUstensils);

@@ -15,6 +15,9 @@ class Dropdown {
     this.appareilsButton = document.getElementById('appareilsButton').closest('.container-dropdown-btn');
     this.ustensilesButton = document.getElementById('ustensilesButton').closest('.container-dropdown-btn');
 
+    this.selectedItemsContainer = document.querySelector('.selected-items-container');
+    this.selectedItems = [];
+
     this.insertDropdown(items);
     this.onChangeDropdown();
   }
@@ -58,6 +61,11 @@ class Dropdown {
     if (otherDropdowns.length > 0) {
       otherDropdowns.forEach(dropdown => {
         dropdown.classList.remove('active');
+        dropdown.closest('.container-dropdown').classList.remove('active');
+        dropdown.querySelector('.bi-chevron-up').classList.replace('bi-chevron-up', 'bi-chevron-down');
+        dropdown.querySelector('.search-input').style.display = 'none';
+        const defaultText = dropdown.getAttribute('data-text');
+        dropdown.childNodes[0].nodeValue = defaultText;
         this.resetStyles();
       });
     }
@@ -88,8 +96,10 @@ class Dropdown {
 
   // réinitialise les styles initianx des boutons
   resetStyles() {
+
     this.appareilsButton.classList.remove('margins');
     this.ustensilesButton.classList.remove('margins');
+
   }
 
   onChangeDropdown() {
@@ -109,16 +119,55 @@ class Dropdown {
     });
   }
 
+
+  preventDropdownCloseOnInputClick() {
+    // Ajoute un gestionnaire d'événement pour l'événement hide.bs.dropdown
+    this.containerDropdown.addEventListener('hide.bs.dropdown', (event) => {
+      // Si l'événement a été déclenché par un clic sur un élément de menu ou sur l'input de recherche
+      if (event.clickEvent && (event.clickEvent.target.classList.contains('dropdown-item') || this.searchInput.contains(event.clickEvent.target))) {
+        // Empêcher la fermeture du menu déroulant
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
+
+    // Ajoute un gestionnaire d'événement pour empêcher la fermeture du menu déroulant lors du clic sur l'input
+    this.searchInput.addEventListener('click', (event) => {
+      event.preventDefault();
+      //event.stopPropagation();
+    });
+
+    // Ajoute un gestionnaire d'événement pour fermer les autres dropdowns lorsqu'un dropdown est ouvert
+    this.containerDropdown.addEventListener('show.bs.dropdown', () => {
+      const otherDropdowns = document.querySelectorAll('.dropdown.show');
+      otherDropdowns.forEach(dropdown => {
+        if (dropdown !== this.containerDropdown) {
+          let bsDropdown = new bootstrap.Dropdown(dropdown.querySelector('.dropdown-toggle'));
+          bsDropdown.hide();
+        }
+      });
+    });
+  }
+
   /**
    * Gère la sélection d'un élément dans le menu déroulant
    * @param {*} item - L'élément sélectionné
    */
   onSelectItem(item) {
     console.log("Élément sélectionné :", item);
-    if (this.toggleActiveStatus()) {
-      this.updateButton('bi-chevron-down', this.defaultText, 'none');
-    }
+    this.addSelectedItem(item);
+    this.preventDropdownCloseOnInputClick()
   }
+
+  addSelectedItem(item) {
+
+    const selectedItem = document.createElement('button');
+    selectedItem.classList.add('btn', 'btn-primary', 'selected-items-tag');
+    selectedItem.textContent = item;
+    this.selectedItemsContainer.appendChild(selectedItem);
+    this.selectedItems.push(item);
+  }
+  
 
   /**
    * Insère les éléments du menu déroulant
@@ -131,6 +180,7 @@ class Dropdown {
       const listItemLink = document.createElement('a');
       listItemLink.classList.add('dropdown-item');
       listItemLink.textContent = item;
+      listItemLink.setAttribute('data-value', item);
       listItem.appendChild(listItemLink);
       list.appendChild(listItem);
 

@@ -78,7 +78,7 @@ body {
       }
 
       &-btn {
-         width: 33%;
+         width: 33%; 
       }
 
       // bouton de titre des dropdowns
@@ -159,7 +159,7 @@ body {
          margin: -7px 0 !important;
          border: none;
          border-radius: 0 0 $border-radius $border-radius;
-      }
+     }
 
       a {
          color: white;
@@ -187,89 +187,85 @@ body {
       opacity: 0;
       transition: all 0.3s;
       pointer-events: none;
-      inset: auto auto auto auto !important;
-      margin: 0 !important;
-      transform: none !important;
-      width: 170px;
-
-      &.show {
-         opacity: 1;
-         width: 215px;
-         display: flex;
-         flex-wrap: wrap;
-         max-height: calc(10 * 36px);
-         overflow-y: auto;
-
-         @include media-breakpoint-up(md) {
-            width: 230px;
-         }
-
+     inset: auto auto auto auto !important;
+     margin: 0 !important;
+     transform: none !important;
+     width: 170px;
+    
+     &.show {
+      pointer-events: auto;
+      opacity: 1;
+      width: 215px;
+       display: flex;
+       flex-wrap: wrap;
+       max-height: calc(10 * 36px);
+       overflow-y: auto;
+       
+       @include media-breakpoint-up(md) {
+         width: 230px;
+       }
+       @include media-breakpoint-up(lg) {
+         width: 470px;
+       }
+       @include media-breakpoint-up(xl) {
+         width: 667px;
+       }
+ 
+       li {
+         
+         width: calc(100% / 1);
+         box-sizing: border-box;
+ 
          @include media-breakpoint-up(lg) {
-            width: 470px;
+           width: calc(100% / 2);
          }
-
          @include media-breakpoint-up(xl) {
-            width: 667px;
+           width: calc(100% / 3);
          }
-
-         li {
-
-            width: calc(100% / 1);
-            box-sizing: border-box;
-
-            @include media-breakpoint-up(lg) {
-               width: calc(100% / 2);
-            }
-
-            @include media-breakpoint-up(xl) {
-               width: calc(100% / 3);
-            }
-         }
-
-         a {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-         }
-      }
+       }
+ 
+       a {
+         cursor: pointer;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+       }
+     }
    }
-
+ 
    &-toggle {
-      transition: all 0.3s;
-
-      &.active {
-         width: 215px;
-
-         @include media-breakpoint-up(md) {
-            width: 230px;
-         }
-
-         @include media-breakpoint-up(lg) {
-            width: 470px;
-         }
-
-         @include media-breakpoint-up(xl) {
-            width: 667px;
-         }
-      }
+     transition: width 0.3s;
+ 
+     &.active {
+       width: 215px;
+       @include media-breakpoint-up(md) {
+         width: 230px;
+       }
+       @include media-breakpoint-up(lg) {
+         width: 470px;
+       }
+       @include media-breakpoint-up(xl) {
+         width: 667px;
+       }
+     }
    }
-}
-
+ }
+ 
 // style des boutons à l'ouverure d'un dropdown
 .margins {
-   transition: all 0.3s;
+ transition: all 0.3s;
 
-   @include media-breakpoint-up(md) {
-      margin-left: 65px;
-   }
+  @include media-breakpoint-up(md) {
+    margin-left: 65px;
+  }
 
-   @include media-breakpoint-up(lg) {
-      margin-left: 300px;
-   }
+  @include media-breakpoint-up(lg) {
+    margin-left: 300px;
+  }
 
-   @include media-breakpoint-up(xl) {
-      margin-left: 500px;
-   }
+  @include media-breakpoint-up(xl) {
+    margin-left: 500px;
+  }
 }
 
 // mise en forme des articles
@@ -346,9 +342,6 @@ body {
    left: 0;
    top: 0;
    background-color: rgba(255, 255, 255, .5);
-   opacity: 0;
-   visibility: hidden;
-   transition: opacity 0.3s;
 
    &-content {
       max-width: $max-width-modal;
@@ -371,22 +364,33 @@ body {
          cursor: pointer;
       }
    }
-
-   &.show {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1.1);
-   }
-
-   &.hide {
-      transform: scale(0.9);
-   }
-
 }
 
+.modal {
+   opacity: 0;
+   visibility: hidden;
+   transition: opacity 0.5s;
+ }
+ 
+ .modal.show {
+   opacity: 1;
+   visibility: visible;
+   transform: scale(1.1);
+ }
+ 
 footer {
    .logo {
       width: 178px;
       height: 62px;
+   }
+}
+
+.selected-items {
+   &-container {
+      margin: 0 50px;
+   }
+
+   &-tag {
+      margin: 0 5px 05px;
    }
 }

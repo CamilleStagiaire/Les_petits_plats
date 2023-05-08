@@ -18,13 +18,13 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Intégrer les maquettes en CSS et les media queries
 
-*
+* Animations sur les dropdowns et la modale de recette
 
 *
 
 *
 
-* Animations
+*
 
 * Gérer l'accessibilité du site (lecteur d'écran et clavier)
 
