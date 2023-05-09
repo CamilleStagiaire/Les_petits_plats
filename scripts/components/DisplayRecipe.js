@@ -36,7 +36,6 @@ class DisplayRecipe {
         `;
 
     document.body.appendChild(modal);
-
     setTimeout(() => {
       modal.classList.add('show');
     }, 0);
