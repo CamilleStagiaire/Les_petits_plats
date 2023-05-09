@@ -6,7 +6,6 @@ import { Dropdown } from "./components/Dropdown.js";
 import recipes from "../data/recipes.js";
 
 class App {
-
   async main() {
     // Transformer les données en tableau d'objets
     const recipeObjects = Recipe.createRecipesFromData(recipes);
