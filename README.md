@@ -20,7 +20,7 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Animations sur les dropdowns et la modale de recette
 
-*
+* Insertion et gestion des tags
 
 *
 
