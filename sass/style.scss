@@ -57,6 +57,28 @@ body {
       }
    }
 
+   &-selected {
+      margin: 0 50px;
+
+      button {
+         color: white;
+         cursor: none;
+         margin-bottom: 10px;
+         &:hover {
+            color: white;
+         }
+
+         i {
+            cursor:pointer;
+         }
+      }
+
+      .bi-x-circle{
+         color: white;
+         padding-left: 5px;
+      }    
+}
+
    /*Dropdowns*/
    &-dropdown {
       display: flex;
@@ -382,15 +404,5 @@ footer {
    .logo {
       width: 178px;
       height: 62px;
-   }
-}
-
-.selected-items {
-   &-container {
-      margin: 0 50px;
-   }
-
-   &-tag {
-      margin: 0 5px 05px;
    }
 }

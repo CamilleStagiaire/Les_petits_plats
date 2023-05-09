@@ -10766,6 +10766,24 @@ body {
 .container-form label {
   display: none;
 }
+.container-selected {
+  margin: 0 50px;
+}
+.container-selected button {
+  color: white;
+  cursor: none;
+  margin-bottom: 10px;
+}
+.container-selected button:hover {
+  color: white;
+}
+.container-selected button i {
+  cursor: pointer;
+}
+.container-selected .bi-x-circle {
+  color: white;
+  padding-left: 5px;
+}
 .container-dropdown {
   display: flex;
   flex-direction: column;
@@ -11054,13 +11072,6 @@ body {
 footer .logo {
   width: 178px;
   height: 62px;
-}
-
-.selected-items-container {
-  margin: 0 50px;
-}
-.selected-items-tag {
-  margin: 0 5px 5px;
 }
 
 /*# sourceMappingURL=style.css.map */

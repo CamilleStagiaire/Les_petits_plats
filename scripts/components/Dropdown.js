@@ -1,3 +1,6 @@
+import { DropdownItem } from './DropdownItem.js';
+import { SelectedItems } from './SelectedItems.js';
+
 class Dropdown {
 
   /**
@@ -15,7 +18,7 @@ class Dropdown {
     this.appareilsButton = document.getElementById('appareilsButton').closest('.container-dropdown-btn');
     this.ustensilesButton = document.getElementById('ustensilesButton').closest('.container-dropdown-btn');
 
-    this.selectedItemsContainer = document.querySelector('.selected-items-container');
+    this.selectedItemsContainer = document.querySelector('.container-selected');
     this.selectedItems = [];
 
     this.insertDropdown(items);
@@ -50,10 +53,10 @@ class Dropdown {
   }
 
   /**
-   * Gère l'état d'ouverure / fermeture des dropdowns
+   * Gère l'état d'ouverture / fermeture des dropdowns
    * @returns {boolean}
    */
-  toggleActiveStatus() {
+  dropdownStatus() {
     const isActive = this.toggle.classList.contains('active');
 
     // vérifier si un autre dropdown a la classe active
@@ -96,16 +99,16 @@ class Dropdown {
 
   // réinitialise les styles initianx des boutons
   resetStyles() {
-
     this.appareilsButton.classList.remove('margins');
     this.ustensilesButton.classList.remove('margins');
 
   }
 
+  // gère les événements associés au menu déroulant
   onChangeDropdown() {
     // Gère le clic sur le bouton du menu déroulant
     this.toggle.addEventListener('click', () => {
-      this.toggleActiveStatus();
+      this.dropdownStatus();
     });
 
     // Gère le clic en dehors du dropdown
@@ -113,31 +116,19 @@ class Dropdown {
       if (!this.containerDropdown.contains(e.target)) {
         this.updateButton('bi-chevron-down', this.defaultText, 'none');
         this.toggle.classList.remove('active');
-
         this.resetStyles();
       }
     });
-  }
 
-
-  preventDropdownCloseOnInputClick() {
-    // Ajoute un gestionnaire d'événement pour l'événement hide.bs.dropdown
+    // Gère la fermeture du dropdown lors du clic sur un élément du menu déroulant ou sur le champ de recherche
     this.containerDropdown.addEventListener('hide.bs.dropdown', (event) => {
-      // Si l'événement a été déclenché par un clic sur un élément de menu ou sur l'input de recherche
       if (event.clickEvent && (event.clickEvent.target.classList.contains('dropdown-item') || this.searchInput.contains(event.clickEvent.target))) {
-        // Empêcher la fermeture du menu déroulant
         event.preventDefault();
         event.stopPropagation();
       }
     });
 
-    // Ajoute un gestionnaire d'événement pour empêcher la fermeture du menu déroulant lors du clic sur l'input
-    this.searchInput.addEventListener('click', (event) => {
-      event.preventDefault();
-      //event.stopPropagation();
-    });
-
-    // Ajoute un gestionnaire d'événement pour fermer les autres dropdowns lorsqu'un dropdown est ouvert
+    // Gère l'affichage du dropdown et ferme les autres dropdowns ouverts
     this.containerDropdown.addEventListener('show.bs.dropdown', () => {
       const otherDropdowns = document.querySelectorAll('.dropdown.show');
       otherDropdowns.forEach(dropdown => {
@@ -152,22 +143,53 @@ class Dropdown {
   /**
    * Gère la sélection d'un élément dans le menu déroulant
    * @param {*} item - L'élément sélectionné
+   * @param {*} dropdown - Le dropdown sélectionné
    */
-  onSelectItem(item) {
-    console.log("Élément sélectionné :", item);
-    this.addSelectedItem(item);
-    this.preventDropdownCloseOnInputClick()
+  onSelectItem(item, dropdown) {
+    /**
+     * Ajoute un élément dans une liste déroulante en ordre alphabétique
+     * @param {*} parentElement - l'élément parent de la liste déroulante
+     * @param {*} listItem - l'élément à ajouter
+     */
+    function alphabeticOrder(parentElement, listItem) {
+      const listItems = parentElement.querySelectorAll('li');
+      const itemText = listItem.querySelector('.dropdown-item').textContent;
+
+      for (let i = 0; i < listItems.length; i++) {
+        const currentItemText = listItems[i].querySelector('.dropdown-item').textContent;
+
+        if (itemText.localeCompare(currentItemText) < 0) {
+          parentElement.insertBefore(listItem, listItems[i]);
+          return;
+        }
+      }
+      parentElement.appendChild(listItem);
+    }
+
+    const ingredientsDropdown = document.getElementById('ingredients-dropdown');
+    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
+    const appliancesDropdown = document.getElementById('appareils-dropdown');
+    const dropdownItem = dropdown.querySelector(`.dropdown-item[data-value="${item}"]`);
+
+    let color = "";
+    if (this.element === ingredientsDropdown) {
+      color = "primary";
+    } else if (this.element === appliancesDropdown) {
+      color = "success";
+    } else if (this.element === ustensilsDropdown) {
+      color = "danger";
+    }
+
+    const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
+      // Supprimer le bouton et le retirer du tableau selectedItems
+      this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
+      this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
+
+      // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
+      alphabeticOrder(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
+    }, color);
   }
 
-  addSelectedItem(item) {
-
-    const selectedItem = document.createElement('button');
-    selectedItem.classList.add('btn', 'btn-primary', 'selected-items-tag');
-    selectedItem.textContent = item;
-    this.selectedItemsContainer.appendChild(selectedItem);
-    this.selectedItems.push(item);
-  }
-  
 
   /**
    * Insère les éléments du menu déroulant
@@ -176,18 +198,9 @@ class Dropdown {
   insertDropdown(items) {
     const list = this.element.querySelector('.dropdown-menu');
     items.forEach(item => {
-      const listItem = document.createElement('li');
-      const listItemLink = document.createElement('a');
-      listItemLink.classList.add('dropdown-item');
-      listItemLink.textContent = item;
-      listItemLink.setAttribute('data-value', item);
-      listItem.appendChild(listItemLink);
+      const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
+      const listItem = dropdownItem.createDropdownItem();
       list.appendChild(listItem);
-
-      // Gère le clic sur un élément du menu déroulant
-      listItemLink.addEventListener("click", () => {
-        this.onSelectItem(item);
-      });
     });
   }
 }

@@ -2,6 +2,7 @@ import { Recipe, Ingredient } from "./models/Recipe.js";
 import { RecipeCard } from "./template/index.js";
 import { DisplayRecipe } from "./components/DisplayRecipe.js";
 import { Dropdown } from "./components/Dropdown.js";
+
 import recipes from "../data/recipes.js";
 
 class App {
