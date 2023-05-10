@@ -10809,14 +10809,13 @@ body {
 .container-dropdown-btn {
   width: 33%;
 }
-.container-dropdown button {
+.container-dropdown .dropdown-toggle {
+  padding-top: 20px;
   text-align: left;
   font-weight: bold;
   height: 69px;
   width: 170px;
   font-size: 18px;
-}
-.container-dropdown .dropdown-toggle {
   position: relative;
   background-color: #3282F7;
 }

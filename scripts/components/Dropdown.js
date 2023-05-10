@@ -87,7 +87,6 @@ class Dropdown {
     return !isActive;
   }
 
-
   // applique les styles aux boutons
   applyStyles() {
     if (this.element.id === 'ingredients-dropdown') {
@@ -146,50 +145,19 @@ class Dropdown {
    * @param {*} dropdown - Le dropdown sélectionné
    */
   onSelectItem(item, dropdown) {
-    /**
-     * Ajoute un élément dans une liste déroulante en ordre alphabétique
-     * @param {*} parentElement - l'élément parent de la liste déroulante
-     * @param {*} listItem - l'élément à ajouter
-     */
-    function alphabeticOrder(parentElement, listItem) {
-      const listItems = parentElement.querySelectorAll('li');
-      const itemText = listItem.querySelector('.dropdown-item').textContent;
-
-      for (let i = 0; i < listItems.length; i++) {
-        const currentItemText = listItems[i].querySelector('.dropdown-item').textContent;
-
-        if (itemText.localeCompare(currentItemText) < 0) {
-          parentElement.insertBefore(listItem, listItems[i]);
-          return;
-        }
-      }
-      parentElement.appendChild(listItem);
-    }
-
-    const ingredientsDropdown = document.getElementById('ingredients-dropdown');
-    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
-    const appliancesDropdown = document.getElementById('appareils-dropdown');
     const dropdownItem = dropdown.querySelector(`.dropdown-item[data-value="${item}"]`);
-
-    let color = "";
-    if (this.element === ingredientsDropdown) {
-      color = "primary";
-    } else if (this.element === appliancesDropdown) {
-      color = "success";
-    } else if (this.element === ustensilsDropdown) {
-      color = "danger";
-    }
-
     const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
       // Supprimer le bouton et le retirer du tableau selectedItems
       this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
       this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
 
-      // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
-      alphabeticOrder(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
-    }, color);
-  }
+      // Créez une nouvelle instance de DropdownItem
+    const newDropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
 
+    // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
+    newDropdownItem.insertAlphabetic(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
+  }, this.element);
+  }
 
   /**
    * Insère les éléments du menu déroulant

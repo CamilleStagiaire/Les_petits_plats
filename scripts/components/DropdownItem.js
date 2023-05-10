@@ -31,6 +31,21 @@ class DropdownItem {
 
     return listItem;
   }
+
+  insertAlphabetic(parentElement, listItem) {
+    const listItems = parentElement.querySelectorAll('li');
+    const itemText = listItem.querySelector('.dropdown-item').textContent;
+
+    for (let i = 0; i < listItems.length; i++) {
+      const currentItemText = listItems[i].querySelector('.dropdown-item').textContent;
+
+      if (itemText.localeCompare(currentItemText) < 0) {
+        parentElement.insertBefore(listItem, listItems[i]);
+        return;
+      }
+    }
+    parentElement.appendChild(listItem);
+  }
 }
 
 export { DropdownItem }

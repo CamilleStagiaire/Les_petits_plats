@@ -6,14 +6,27 @@ class SelectedItems {
    * @param {function} onSelect - fonction appelée lorsque l'élément est supprimé
    * @param {string} color - La couleur à appliquer au bouton d'élément sélectionné
    */
-  constructor(item, selectedItemsContainer, selectedItems, onSelect, color) {
+  constructor(item, selectedItemsContainer, selectedItems, onSelect, element) {
     this.item = item;
     this.selectedItemsContainer = selectedItemsContainer;
     this.selectedItems = selectedItems;
     this.onSelect = onSelect;
-    this.color = color;
+    this.color = this.getColor(element);
     this.selectedItem = this.createSelectedItem();
+  }
 
+  /**
+   * @param {HTMLElement} element
+   * @returns {string}
+   */
+  getColor(element) {
+    if (element === document.getElementById('ingredients-dropdown')) {
+      return "primary";
+    } else if (element === document.getElementById('appareils-dropdown')) {
+      return "success";
+    } else if (element === document.getElementById('ustensiles-dropdown')) {
+      return "danger";
+    }
   }
 
   /**
@@ -34,7 +47,7 @@ class SelectedItems {
       e.stopPropagation(); // Empêche la propagation de l'événement au bouton
       this.onSelect();
     });
-
+    
     this.selectedItemsContainer.appendChild(selectedItem);
     this.selectedItems.push(this.item);
 
