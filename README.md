@@ -24,11 +24,13 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Validation HTML (Nu Html Checker)
 
+* Fonctionnalité de recherche dans la barre principale
+
 *
 
 * Gérer l'accessibilité du site (lecteur d'écran et clavier)
 
-* Revue de code
+* Revue de code + EsLint
 
 # Compétences évaluées:
 

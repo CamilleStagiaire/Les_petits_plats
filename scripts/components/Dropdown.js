@@ -34,11 +34,12 @@ class Dropdown {
     const ingredientsDropdown = document.getElementById('ingredients-dropdown');
     const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
     const appliancesDropdown = document.getElementById('appareils-dropdown');
-    new Dropdown(ingredientsDropdown, ingredients);
-    new Dropdown(ustensilsDropdown, ustensils);
-    new Dropdown(appliancesDropdown, appliances);
+    return {
+      ingredientsDropdown: new Dropdown(ingredientsDropdown, ingredients),
+      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),
+      appliancesDropdown: new Dropdown(appliancesDropdown, appliances),
+    };
   }
-
   /**
    * mise à jour du bouton de dropdown
    * @param {string} icon - classe de l'icône à afficher
@@ -120,10 +121,10 @@ class Dropdown {
     });
 
     // Gère la fermeture du dropdown lors du clic sur un élément du menu déroulant ou sur le champ de recherche
-    this.containerDropdown.addEventListener('hide.bs.dropdown', (event) => {
-      if (event.clickEvent && (event.clickEvent.target.classList.contains('dropdown-item') || this.searchInput.contains(event.clickEvent.target))) {
-        event.preventDefault();
-        event.stopPropagation();
+    this.containerDropdown.addEventListener('hide.bs.dropdown', (e) => {
+      if (e.clickEvent && (e.clickEvent.target.classList.contains('dropdown-item') || this.searchInput.contains(e.clickEvent.target))) {
+        e.preventDefault();
+        e.stopPropagation();
       }
     });
 
@@ -165,11 +166,21 @@ class Dropdown {
    */
   insertDropdown(items) {
     const list = this.element.querySelector('.dropdown-menu');
+    list.innerHTML = ""; // Vide le contenu du dropdown
     items.forEach(item => {
       const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
       const listItem = dropdownItem.createDropdownItem();
       list.appendChild(listItem);
     });
+  }
+
+  /**
+   * Mise à jour les items du dropdown
+   * @param {Array} items - nouveaux items à afficher.
+   */
+  updateItems(items) {
+    this.items = items;
+    this.insertDropdown();
   }
 }
 
