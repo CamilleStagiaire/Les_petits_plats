@@ -12,6 +12,8 @@ class Search {
     const filteredRecipes = [];
     let i = 0;
     searchString = this.removeAccents(searchString).toLowerCase();
+    const searchWords = searchString.split(" "); // diviser searchString en mots individuels
+  
     while (i < this.recipes.length) {
       const recipe = this.recipes[i];
       const recipeName = this.removeAccents(recipe.name).toLowerCase();
@@ -19,11 +21,13 @@ class Search {
         .map((ingredient) => this.removeAccents(ingredient.ingredient).toLowerCase())
         .join(" ");
       const recipeDescription = this.removeAccents(recipe.description).toLowerCase();
-
+  
       if (
-        recipeName.includes(searchString) ||
-        recipeIngredients.includes(searchString) ||
-        recipeDescription.includes(searchString)
+        searchWords.every(word => // chaque mot doit être présent dans l'un des champs
+          recipeName.includes(word) ||
+          recipeIngredients.includes(word) ||
+          recipeDescription.includes(word)
+        )
       ) {
         filteredRecipes.push(recipe);
       }
@@ -31,7 +35,7 @@ class Search {
     }
     return filteredRecipes;
   }
-
+  
   /**
    * Supprimer les accents 
    * @param {string} str 

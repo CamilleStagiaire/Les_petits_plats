@@ -15,6 +15,9 @@ class App {
     this.ingredientsDropdown = null;
     this.ustensilsDropdown = null;
     this.appliancesDropdown = null;
+    this.selectedIngredients = [];
+    this.selectedUstensils = [];
+    this.selectedAppliances = [];
   }
 
   async main() {
@@ -53,6 +56,7 @@ class App {
       const searchString = searchInput.value;
       this.updateRecipes(searchString);
     });
+    
   }
 
   /**
@@ -69,29 +73,47 @@ class App {
 
   }
 
+    /**
+   * Mettre à jour les éléments sélectionnés
+   * @param {string} item
+   * @param {Array} selectedItems
+   */
+    updateSelectedItems(item, selectedItems) {
+      const index = selectedItems.indexOf(item);
+      if (index > -1) {
+        selectedItems.splice(index, 1);
+      } else {
+        selectedItems.push(item);
+      }
+      this.updateRecipes(document.getElementById("search").value);
+    }
+
   /**
   * Filtrer et afficher les recettes en fonction de la chaîne de recherche 
   * @param {string} searchString
   */
   updateRecipes(searchString) {
     const MIN_CHARACTERS = 3;
-    if (searchString.length >= MIN_CHARACTERS) {
-      const filteredRecipes = this.search.search(searchString);
-      const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
-      const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
-      const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
-
-      this.ingredientsDropdown.insertDropdown(uniqueIngredients);
-      this.ustensilsDropdown.insertDropdown(uniqueUstensils);
-      this.appliancesDropdown.insertDropdown(uniqueAppliances);
-      console.log(uniqueIngredients);
-      console.log(uniqueUstensils);
-      console.log(uniqueAppliances);
-
-      const container = document.getElementById("recipe-container");
-      container.innerHTML = "";
-      this.displayRecipes(filteredRecipes);
+    if (searchString.length < MIN_CHARACTERS) {
+      return;
     }
+
+    const selectedItems = [...this.selectedIngredients, ...this.selectedUstensils, ...this.selectedAppliances];
+    const filteredRecipes = this.search.search(searchString);
+    const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
+    const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
+    const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
+
+    this.ingredientsDropdown.insertDropdown(uniqueIngredients);
+    this.ustensilsDropdown.insertDropdown(uniqueUstensils);
+    this.appliancesDropdown.insertDropdown(uniqueAppliances);
+    console.log(uniqueIngredients);
+    console.log(uniqueUstensils);
+    console.log(uniqueAppliances);
+
+    const container = document.getElementById("recipe-container");
+    container.innerHTML = "";
+    this.displayRecipes(filteredRecipes);
   }
 }
 
