@@ -35,17 +35,20 @@ class SelectedItems {
    */
   createSelectedItem() {
     const selectedItem = document.createElement('button');
+    selectedItem.classList.add('parent-container');
     selectedItem.setAttribute('data-value', this.item);
     selectedItem.classList.add('btn', 'me-2');
     selectedItem.classList.add(`btn-${this.color}`);
     selectedItem.textContent = this.item;
-
+   
     const icon = document.createElement('i');
-    icon.classList.add('bi', 'bi-x-circle', 'ms-1');
+    icon.classList.add('bi', 'bi-x-circle', 'ms-1', 'created-icon');
+    icon.setAttribute('data-value', this.item)
     selectedItem.appendChild(icon);
     icon.addEventListener('click', (e) => {
       e.stopPropagation(); // Empêche la propagation de l'événement au bouton
-      this.onSelect();
+      this.onSelect(this.item);
+      
     });
     
     this.selectedItemsContainer.appendChild(selectedItem);

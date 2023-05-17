@@ -56,7 +56,32 @@ class App {
       const searchString = searchInput.value;
       this.updateRecipes(searchString);
     });
-    
+
+
+    this.addDropdownEventListeners();
+  }
+
+  addDropdownEventListeners() {
+    const selectedItemsContainer = document.querySelector(".container-selected");
+    const searchDropdownItems = document.querySelectorAll(".dropdown-item");
+
+    searchDropdownItems.forEach((dropdownItem) => {
+      dropdownItem.addEventListener("click", (event) => {
+        const selectedItem = event.target.getAttribute("data-value");
+       // console.log(selectedItem);
+        const parentContainer = selectedItemsContainer.querySelector(".parent-container");
+        const parentContainerIcon = parentContainer.querySelector("i");
+
+        this.filterRecipes(selectedItem);
+
+        parentContainerIcon.addEventListener("click", (e) => {
+          const iconDataValue = parentContainerIcon.getAttribute("data-value");
+
+          console.log("Clic sur l'icône du parent-container avec la valeur :", iconDataValue);
+          this.filterRecipes(""); // Supprimer le filtrage 
+        });
+      });
+    });
   }
 
   /**
@@ -73,21 +98,6 @@ class App {
 
   }
 
-    /**
-   * Mettre à jour les éléments sélectionnés
-   * @param {string} item
-   * @param {Array} selectedItems
-   */
-    updateSelectedItems(item, selectedItems) {
-      const index = selectedItems.indexOf(item);
-      if (index > -1) {
-        selectedItems.splice(index, 1);
-      } else {
-        selectedItems.push(item);
-      }
-      this.updateRecipes(document.getElementById("search").value);
-    }
-
   /**
   * Filtrer et afficher les recettes en fonction de la chaîne de recherche 
   * @param {string} searchString
@@ -98,12 +108,12 @@ class App {
       return;
     }
 
-    const selectedItems = [...this.selectedIngredients, ...this.selectedUstensils, ...this.selectedAppliances];
     const filteredRecipes = this.search.search(searchString);
     const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
     const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
     const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
 
+    // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
     this.ingredientsDropdown.insertDropdown(uniqueIngredients);
     this.ustensilsDropdown.insertDropdown(uniqueUstensils);
     this.appliancesDropdown.insertDropdown(uniqueAppliances);
@@ -114,6 +124,53 @@ class App {
     const container = document.getElementById("recipe-container");
     container.innerHTML = "";
     this.displayRecipes(filteredRecipes);
+
+    if (selectedItem !== "") {
+      const filteredRecipesByItem = filteredRecipes.filter((recipe) => {
+        const { name, ingredients, description } = recipe;
+        const lowerCaseSelectedItem = selectedItem.toLowerCase();
+
+        return (
+          name.toLowerCase().includes(lowerCaseSelectedItem) ||
+          ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(lowerCaseSelectedItem)) ||
+          description.toLowerCase().includes(lowerCaseSelectedItem)
+        );
+      });
+
+      container.innerHTML = "";
+      this.displayRecipes(filteredRecipesByItem);
+    }
+  }
+
+  /**
+   * Filtre les recettes en fonction de l'élément sélectionné.
+   * @param {string} selectedItem 
+   */
+  filterRecipes(selectedItem) {
+    const filteredRecipes = this.recipes.filter((recipe) => {
+      const { name, ingredients, description } = recipe;
+      const lowerCaseSelectedItem = selectedItem.toLowerCase();
+
+      return (
+        name.toLowerCase().includes(lowerCaseSelectedItem) ||
+        ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(lowerCaseSelectedItem)) ||
+        description.toLowerCase().includes(lowerCaseSelectedItem)
+      );
+    });
+
+    const container = document.getElementById("recipe-container");
+    container.innerHTML = "";
+    this.displayRecipes(filteredRecipes);
+
+    // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
+    const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
+    const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes)
+    const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes)
+
+    // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
+    this.ingredientsDropdown.insertDropdown(uniqueIngredients);
+    this.ustensilsDropdown.insertDropdown(uniqueUstensils);
+    this.appliancesDropdown.insertDropdown(uniqueAppliances);
   }
 }
 

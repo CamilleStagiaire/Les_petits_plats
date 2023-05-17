@@ -30,14 +30,15 @@ class Dropdown {
    * @param {*} ustensils 
    * @param {*} appliances 
    */
-  static initDropdowns(ingredients, ustensils, appliances) {
+  static initDropdowns(ingredients, appliances, ustensils) {
     const ingredientsDropdown = document.getElementById('ingredients-dropdown');
-    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
     const appliancesDropdown = document.getElementById('appareils-dropdown');
+    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
+    
     return {
       ingredientsDropdown: new Dropdown(ingredientsDropdown, ingredients),
-      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),
       appliancesDropdown: new Dropdown(appliancesDropdown, appliances),
+      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),     
     };
   }
   /**
@@ -146,18 +147,22 @@ class Dropdown {
    * @param {*} dropdown - Le dropdown sélectionné
    */
   onSelectItem(item, dropdown) {
+    console.log(item);
     const dropdownItem = dropdown.querySelector(`.dropdown-item[data-value="${item}"]`);
     const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
+     console.log(item);
+     
+      
       // Supprimer le bouton et le retirer du tableau selectedItems
       this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
       this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
 
       // Créez une nouvelle instance de DropdownItem
-    const newDropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
+      const newDropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
 
-    // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
-    newDropdownItem.insertAlphabetic(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
-  }, this.element);
+      // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
+      newDropdownItem.insertAlphabetic(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
+    }, this.element);
   }
 
   /**
@@ -171,6 +176,7 @@ class Dropdown {
       const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
       const listItem = dropdownItem.createDropdownItem();
       list.appendChild(listItem);
+
     });
   }
 

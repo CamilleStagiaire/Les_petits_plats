@@ -35,6 +35,7 @@ class Search {
     }
     return filteredRecipes;
   }
+
   
   /**
    * Supprimer les accents 
@@ -44,6 +45,26 @@ class Search {
   removeAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
+
+  // searchByItem(selectedItemsContainer) {
+  //   let hasParentContainer = false;
+  //   let parentContainerIcon = null;
+
+  //   for (let j = 0; j < selectedItemsContainer.children.length; j++) {
+  //     const child = selectedItemsContainer.children[j];
+
+  //     if (child.classList.contains("parent-container")) {
+  //       hasParentContainer = true;
+  //       parentContainerIcon = child.querySelector("i");
+  //       break;
+  //     }
+  //   }
+
+  //   return {
+  //     hasParentContainer,
+  //     parentContainerIcon
+  //   };
+  // }
 }
 
 export { Search }

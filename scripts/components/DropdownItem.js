@@ -6,6 +6,7 @@ class DropdownItem {
   constructor(item, onSelectItem) {
     this.item = item;
     this.onSelectItem = onSelectItem;
+    
   }
 
   /**

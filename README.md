@@ -26,6 +26,8 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Fonctionnalité de recherche dans la barre principale
 
+* Mise à jour des recettes et élements dans les dropdowns
+
 *
 
 * Gérer l'accessibilité du site (lecteur d'écran et clavier)
