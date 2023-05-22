@@ -42,7 +42,7 @@ class Dropdown {
       ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),
     };
   }
-  
+
   /**
    * mise à jour du bouton de dropdown
    * @param {string} icon - classe de l'icône à afficher
@@ -151,7 +151,6 @@ class Dropdown {
   onSelectItem(item, dropdownItem) {
     const event = new CustomEvent('dropdownItemSelected', { detail: item });
     document.dispatchEvent(event);
-
     dropdownItem.classList.add('hidden');
     this.selectedItem = item;
 

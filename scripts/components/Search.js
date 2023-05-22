@@ -44,6 +44,22 @@ class Search {
   removeAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
+
+  searchByItems(items, recipes) {
+    return recipes.filter((recipe) => {
+        return items.every(item => {
+            const lowerCaseItem = item.toLowerCase();
+            const { name, ingredients, description } = recipe;
+
+            return (
+                name.toLowerCase().includes(lowerCaseItem) ||
+                ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(lowerCaseItem)) ||
+                description.toLowerCase().includes(lowerCaseItem)
+            );
+        });
+    });
+}
+
 }
 
 export { Search }
