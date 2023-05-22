@@ -10,6 +10,9 @@ class Dropdown {
   constructor(element, items = []) {
     this.element = element;
     this.items = items;
+    this.selectedItem = null;
+    this.selectedItems = [];
+
     this.toggle = this.element.querySelector('.dropdown-toggle');
     this.chevron = this.toggle.querySelector('.bi');
     this.searchInput = this.element.querySelector('.search-input');
@@ -17,9 +20,7 @@ class Dropdown {
     this.containerDropdown = this.element.closest(".container-dropdown");
     this.appareilsButton = document.getElementById('appareilsButton').closest('.container-dropdown-btn');
     this.ustensilesButton = document.getElementById('ustensilesButton').closest('.container-dropdown-btn');
-
     this.selectedItemsContainer = document.querySelector('.container-selected');
-    this.selectedItems = [];
 
     this.insertDropdown(items);
     this.onChangeDropdown();
@@ -34,13 +35,14 @@ class Dropdown {
     const ingredientsDropdown = document.getElementById('ingredients-dropdown');
     const appliancesDropdown = document.getElementById('appareils-dropdown');
     const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
-    
+
     return {
       ingredientsDropdown: new Dropdown(ingredientsDropdown, ingredients),
       appliancesDropdown: new Dropdown(appliancesDropdown, appliances),
-      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),     
+      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils),
     };
   }
+  
   /**
    * mise à jour du bouton de dropdown
    * @param {string} icon - classe de l'icône à afficher
@@ -146,22 +148,24 @@ class Dropdown {
    * @param {*} item - L'élément sélectionné
    * @param {*} dropdown - Le dropdown sélectionné
    */
-  onSelectItem(item, dropdown) {
-    console.log(item);
-    const dropdownItem = dropdown.querySelector(`.dropdown-item[data-value="${item}"]`);
+  onSelectItem(item, dropdownItem) {
+    const event = new CustomEvent('dropdownItemSelected', { detail: item });
+    document.dispatchEvent(event);
+
+    dropdownItem.classList.add('hidden');
+    this.selectedItem = item;
+
     const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
-     console.log(item);
-     
-      
+      const otherEvent = new CustomEvent('buttonItemSelected', { detail: item });
+      document.dispatchEvent(otherEvent);
+      dropdownItem.classList.remove('hidden');
+
       // Supprimer le bouton et le retirer du tableau selectedItems
       this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
       this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
+      this.selectedItem = null;
 
-      // Créez une nouvelle instance de DropdownItem
-      const newDropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
-
-      // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
-      newDropdownItem.insertAlphabetic(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
+      dropdownItem.classList.remove('hidden');
     }, this.element);
   }
 
@@ -171,12 +175,14 @@ class Dropdown {
    */
   insertDropdown(items) {
     const list = this.element.querySelector('.dropdown-menu');
-    list.innerHTML = ""; // Vide le contenu du dropdown
+    list.innerHTML = "";
     items.forEach(item => {
       const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
       const listItem = dropdownItem.createDropdownItem();
+      if (item === this.selectedItem) {
+        listItem.classList.add('hidden');
+      }
       list.appendChild(listItem);
-
     });
   }
 

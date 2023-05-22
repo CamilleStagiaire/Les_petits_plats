@@ -48,7 +48,6 @@ class SelectedItems {
     icon.addEventListener('click', (e) => {
       e.stopPropagation(); // Empêche la propagation de l'événement au bouton
       this.onSelect(this.item);
-      
     });
     
     this.selectedItemsContainer.appendChild(selectedItem);

@@ -43,7 +43,6 @@ class DisplayRecipe {
     const closeButton = modal.querySelector('.close');
     closeButton.addEventListener('click', () => {
       modal.classList.remove('show');
-      //modal.classList.add('hide');
       setTimeout(() => {
         document.body.removeChild(modal);
       }, 500);

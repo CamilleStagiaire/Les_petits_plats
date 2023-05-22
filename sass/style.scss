@@ -7,6 +7,9 @@ body {
    font-family: $font-text;
 }
 
+.hidden {
+   display: none;
+}
 .logo {
    width: 268px;
    height: 93px;
@@ -232,7 +235,8 @@ body {
        }
  
        li {
-         
+         cursor: pointer;
+         color: white;
          width: calc(100% / 1);
          box-sizing: border-box;
  
@@ -242,13 +246,10 @@ body {
          @include media-breakpoint-up(xl) {
            width: calc(100% / 3);
          }
-       }
- 
-       a {
-         cursor: pointer;
-         white-space: nowrap;
-         overflow: hidden;
-         text-overflow: ellipsis;
+
+         &:hover {
+            color: black;
+         }
        }
      }
    }
