@@ -12,6 +12,7 @@ class Dropdown {
     this.items = items;
     this.selectedItem = null;
     this.selectedItems = [];
+    this.originalItems = items;
 
     this.toggle = this.element.querySelector('.dropdown-toggle');
     this.chevron = this.toggle.querySelector('.bi');
@@ -141,6 +142,37 @@ class Dropdown {
         }
       });
     });
+
+   // Gère la recherche dans le dropdown
+this.searchInput.addEventListener('input', (e) => {
+  const searchString = e.target.value;
+  if (searchString.length >= 3) {
+    this.updateItems(this.searchInDropdown(searchString))
+  } else if (searchString.length === 0) { 
+    // Si la chaîne de recherche est vide, rétablir la liste d'articles d'origine
+    this.updateItems(this.originalItems);
+  }
+});
+  }
+
+  searchInDropdown(searchString) {
+    const filteredItems = [];
+    searchString = this.removeAccents(searchString).toLowerCase();
+    const searchWords = searchString.split(" "); // diviser searchString en mots individuels
+  
+    this.items.forEach(item => {
+      const itemName = this.removeAccents(item).toLowerCase();
+  
+      if (searchWords.every(word => itemName.includes(word))) {
+        filteredItems.push(item);
+      }
+    });
+  
+    return filteredItems;
+  }
+
+  removeAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
   /**
@@ -190,9 +222,11 @@ class Dropdown {
    * @param {Array} items - nouveaux items à afficher.
    */
   updateItems(items) {
-    this.items = items;
-    this.insertDropdown();
+    //this.items = items;
+    this.insertDropdown(items);
   }
+
+  
 }
 
 export { Dropdown }
