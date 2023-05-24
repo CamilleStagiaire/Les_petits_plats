@@ -6,7 +6,7 @@ https://github.com/CamilleStagiaire/FishEye.git
 *Formation Développeur d'application - JavaScript React*
 
 # Etapes
-* installation et configuration des modules :
+ installation et configuration des modules :
 - Sass
 - Eslint
 - les modules JavaScript: intégrer les instructions import et export
@@ -20,17 +20,29 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Animations sur les dropdowns et la modale de recette
 
-* Insertion et gestion des tags
-
 * Validation HTML (Nu Html Checker)
+
+* Algorigrammes 
 
 * Fonctionnalité de recherche dans la barre principale
 
 * Mise à jour des recettes et élements dans les dropdowns
 
-*
+* Ajout / suppression dynamique de tags
+
+* Fonctionnalité de recherche par tags
+
+* Recherches croisées dans la barre principale par tags
+
+* Fonctionnalité de recherche de tags dans les dropdowns
+
+* Création d'une 2ème branche GitHub
+
+* Fiche d'investigation 
 
 * Gérer l'accessibilité du site (lecteur d'écran et clavier)
+
+* Tests manuels
 
 * Revue de code + EsLint
 

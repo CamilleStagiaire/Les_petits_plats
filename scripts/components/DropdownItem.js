@@ -1,7 +1,7 @@
 class DropdownItem {
   /**
    * @param {string} item - L'élément du menu déroulant à créer
-   * @param {function} onSelectItem - fonction à exécuter quand un élément est sélectionné.
+   * @param {function} onSelectItem -  quand un élément est sélectionné.
    */
   constructor(item, onSelectItem) {
     this.item = item;
@@ -10,7 +10,7 @@ class DropdownItem {
 
   /**
    * Crée et retourne un élément dans les listes déroulantes.
-   * @returns {HTMLElement} - L'élément de liste déroulante créé.
+   * @returns {HTMLElement} - L'élément de la liste déroulante créé.
    */
   createDropdownItem() {
     const listItem = document.createElement('li');
@@ -23,7 +23,6 @@ class DropdownItem {
       e.stopPropagation(); // Empêche la fermeture du menu déroulant
       this.onSelectItem(this.item, e.currentTarget);
     });
-//console.log(listItem);
     return listItem;
 }
 

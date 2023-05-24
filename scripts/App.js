@@ -10,6 +10,7 @@ class App {
    * @param {Array<Recipe>} recipes - Tableau des recettes
    */
   constructor(recipes) {
+
     this.recipes = recipes;
     this.search = new Search(this.recipes);
     this.ingredientsDropdown = null;
@@ -17,6 +18,10 @@ class App {
     this.appliancesDropdown = null;
 
     this.selectedItems = [];
+
+    this.searchInput = document.querySelector('.search-input');
+
+    
   }
 
   async main() {
@@ -59,10 +64,12 @@ class App {
 
     document.addEventListener('dropdownItemSelected', (event) => {
       setTimeout(() => {
-        this.updateRecipes(document.getElementById("search").value, event.detail);
+        this.updateRecipes(document.querySelector(".search-input").value, event.detail);
+        this.searchInput.value = '';
+        this.searchInput.focus();
       }, 0);
     });
-    
+
     document.addEventListener('buttonItemSelected', (event) => {
       setTimeout(() => {
         const selectedItem = event.detail;
@@ -89,46 +96,46 @@ class App {
 
   }
 
- /**
- * Filtrer et afficher les recettes en fonction de la chaîne de recherche 
- * @param {string} searchString
- * @param {string} selectedItem
- */
-updateRecipes(searchString = "", selectedItem = "") {
-  const MIN_CHARACTERS = 3;
-  let filteredRecipes = this.recipes;
-  
-  // Si un nouvel élément a été sélectionné, l'ajouter à la liste
-  if (selectedItem !== "") {
-    this.selectedItems.push(selectedItem);
+  /**
+  * Filtrer et afficher les recettes en fonction de la recherche 
+  * @param {string} searchString
+  * @param {string} selectedItem
+  */
+  updateRecipes(searchString = "", selectedItem = "") {
+    const MIN_CHARACTERS = 3;
+    let filteredRecipes = this.recipes;
+
+    if (selectedItem !== "") {
+      this.selectedItems.push(selectedItem);
+    }
+
+    // Filtrer les recettes par les mots dans la barre de recherche
+    if (searchString.length >= MIN_CHARACTERS) {
+      filteredRecipes = this.search.search(searchString);
+    }
+
+    // Filtrer par les tags sélectionnés
+    if (this.selectedItems.length > 0) {
+      filteredRecipes = this.search.searchByItems(this.selectedItems, filteredRecipes);
+    }
+
+    const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
+    const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
+    const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
+    
+
+    // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
+    this.ingredientsDropdown.insertDropdown(uniqueIngredients);
+    this.ustensilsDropdown.insertDropdown(uniqueUstensils);
+    this.appliancesDropdown.insertDropdown(uniqueAppliances);
+    console.log(uniqueIngredients);
+   
+    const container = document.getElementById("recipe-container");
+    container.innerHTML = "";
+    this.displayRecipes(filteredRecipes);
+    console.log(filteredRecipes.length);
+    
   }
-
-  // Filtrer les recettes par les mots dans la barre de recherche
-  if (searchString.length >= MIN_CHARACTERS) {
-    filteredRecipes = this.search.search(searchString);
-  }
-
-  // Filtrer encore par les items sélectionnés
-  if (this.selectedItems.length > 0) {
-    filteredRecipes = this.search.searchByItems(this.selectedItems, filteredRecipes);
-  }
-
-  const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
-  const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
-  const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
-
-  // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
-  this.ingredientsDropdown.insertDropdown(uniqueIngredients);
-  this.ustensilsDropdown.insertDropdown(uniqueUstensils);
-  this.appliancesDropdown.insertDropdown(uniqueAppliances);
-
-  const container = document.getElementById("recipe-container");
-  container.innerHTML = "";
-  this.displayRecipes(filteredRecipes);
-  console.log(filteredRecipes);
-}
-
-  
 }
 
 const app = new App(recipes);
