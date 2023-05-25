@@ -40,7 +40,7 @@ class SelectedItems {
     selectedItem.classList.add('btn', 'me-2');
     selectedItem.classList.add(`btn-${this.color}`);
     selectedItem.textContent = this.item;
-   
+
     const icon = document.createElement('i');
     icon.classList.add('bi', 'bi-x-circle', 'ms-1', 'created-icon');
     icon.setAttribute('data-value', this.item)
@@ -49,7 +49,7 @@ class SelectedItems {
       e.stopPropagation(); // Empêche la propagation de l'événement au bouton
       this.onSelect(this.item);
     });
-    
+
     this.selectedItemsContainer.appendChild(selectedItem);
     this.selectedItems.push(this.item);
 

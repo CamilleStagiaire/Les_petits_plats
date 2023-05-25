@@ -32,7 +32,7 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Fonctionnalité de recherche par tags
 
-* Recherches croisées dans la barre principale par tags
+* Recherches croisées dans la barre principale et par tags
 
 * Fonctionnalité de recherche de tags dans les dropdowns
 

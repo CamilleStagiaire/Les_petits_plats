@@ -18,10 +18,10 @@ class App {
     this.appliancesDropdown = null;
 
     this.selectedItems = [];
-
+    this.lastSearchString = "";
     this.searchInput = document.querySelector('.search-input');
 
-    
+
   }
 
   async main() {
@@ -30,7 +30,6 @@ class App {
 
     // Afficher les cartes de recette
     this.displayRecipes(recipeObjects);
-
 
     // Récupérer les ingrédients uniques
     const uniqueIngredients = Recipe.getAllIngredients(recipeObjects);
@@ -65,7 +64,6 @@ class App {
     document.addEventListener('dropdownItemSelected', (event) => {
       setTimeout(() => {
         this.updateRecipes(document.querySelector(".search-input").value, event.detail);
-        this.searchInput.value = '';
         this.searchInput.focus();
       }, 0);
     });
@@ -77,6 +75,7 @@ class App {
         if (index > -1) {
           this.selectedItems.splice(index, 1);
         }
+        this.searchInput.focus();
         this.updateRecipes(document.getElementById("search").value);
       }, 0);
     });
@@ -112,6 +111,8 @@ class App {
     // Filtrer les recettes par les mots dans la barre de recherche
     if (searchString.length >= MIN_CHARACTERS) {
       filteredRecipes = this.search.search(searchString);
+    } else if (searchString.length < MIN_CHARACTERS && selectedItem === "") {
+      this.search.filteredRecipes = null;
     }
 
     // Filtrer par les tags sélectionnés
@@ -122,19 +123,20 @@ class App {
     const uniqueIngredients = Recipe.getAllIngredients(filteredRecipes);
     const uniqueAppliances = Recipe.getAllAppliances(filteredRecipes);
     const uniqueUstensils = Recipe.getAllUstensils(filteredRecipes);
-    
 
     // Mettre à jour les éléments de chaque dropdown avec les nouvelles listes
     this.ingredientsDropdown.insertDropdown(uniqueIngredients);
     this.ustensilsDropdown.insertDropdown(uniqueUstensils);
     this.appliancesDropdown.insertDropdown(uniqueAppliances);
-    console.log(uniqueIngredients);
-   
+
     const container = document.getElementById("recipe-container");
     container.innerHTML = "";
     this.displayRecipes(filteredRecipes);
     console.log(filteredRecipes.length);
-    
+
+    if (filteredRecipes.length === 0) {
+      container.innerHTML = "Aucune recette ne correspond à votre critère…";
+    }
   }
 }
 

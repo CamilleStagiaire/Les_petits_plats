@@ -24,7 +24,7 @@ class DropdownItem {
       this.onSelectItem(this.item, e.currentTarget);
     });
     return listItem;
-}
+  }
 
   insertAlphabetic(parentElement, listItem) {
     const listItems = parentElement.querySelectorAll('li');

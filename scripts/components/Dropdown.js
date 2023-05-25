@@ -13,7 +13,6 @@ class Dropdown {
     this.items = items;
     this.selectedItem = null;
     this.selectedItems = [];
-    this.originalItems = items;
     this.search = search;
     this.updatedItems = [...items];
 
@@ -41,7 +40,6 @@ class Dropdown {
     const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
 
     const search = new Search();
-
 
     return {
       ingredientsDropdown: new Dropdown(ingredientsDropdown, ingredients, search),
@@ -79,37 +77,29 @@ class Dropdown {
         dropdown.querySelector('.search-input').style.display = 'none';
         const defaultText = dropdown.getAttribute('data-text');
         dropdown.childNodes[0].nodeValue = defaultText;
-        this.resetStyles();
+        this.setButtonStyles(false);
       });
     }
 
     if (isActive) {
       this.updateButton('bi-chevron-down', this.defaultText, 'none');
       this.containerDropdown.classList.remove('active');
-      this.resetStyles();
+      this.setButtonStyles(false);
 
     } else {
-      //this.searchInput.value = '';
       this.updateButton('bi-chevron-up', '', 'inline-block');
       this.toggle.classList.add('active');
       this.searchInput.focus();
       this.containerDropdown.classList.add('active');
-      this.applyStyles();
+      this.setButtonStyles(true);
     }
     return !isActive;
   }
 
-  // applique les styles aux boutons
-  applyStyles() {
+  setButtonStyles(apply = false) {
     const { id } = this.element;
-    this.appareilsButton.classList.toggle('margins', id === 'ingredients-dropdown');
-    this.ustensilesButton.classList.toggle('margins', id === 'appareils-dropdown');
-  }
-
-  // réinitialise les styles initianx des boutons
-  resetStyles() {
-    this.appareilsButton.classList.remove('margins');
-    this.ustensilesButton.classList.remove('margins');
+    this.appareilsButton.classList.toggle('margins', apply && id === 'ingredients-dropdown');
+    this.ustensilesButton.classList.toggle('margins', apply && id === 'appareils-dropdown');
   }
 
   // gère les événements associés au menu déroulant
@@ -124,24 +114,22 @@ class Dropdown {
       if (!this.containerDropdown.contains(e.target)) {
         this.updateButton('bi-chevron-down', this.defaultText, 'none');
         this.toggle.classList.remove('active');
-        this.resetStyles();
+        this.setButtonStyles(false);
       }
     });
 
     // Recherche dans les dropdowns
     this.searchInput.addEventListener('input', (e) => {
       const searchString = e.target.value;
-
       if (searchString.length > 0) {
         const searchResults = this.search.searchInDropdown(searchString, this.items);
         this.items = searchResults;
-        this.updateItems(searchResults);
+        this.insertDropdown(searchResults);
       } else {
         this.items = [...this.search.originalItems];
-        this.updateItems(this.items);
+        this.insertDropdown(this.items);
       }
     });
-
   }
 
   /**
@@ -187,12 +175,6 @@ class Dropdown {
       }
       list.appendChild(listItem);
     });
-  }
-
-
-  updateItems(items) {
-    this.insertDropdown(items);
-    console.log(items);
   }
 }
 

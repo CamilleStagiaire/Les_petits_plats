@@ -6,6 +6,7 @@ class Search {
   constructor(recipes) {
     this.recipes = recipes;
     this.originalItems = null;
+    this.filteredRecipes = null;
   }
 
   /**
@@ -17,7 +18,7 @@ class Search {
     const filteredRecipes = [];
     let i = 0;
     searchString = this.removeAccents(searchString).toLowerCase();
-    const searchWords = searchString.split(" "); // diviser searchString en mots individuels
+    const searchWords = searchString.split(" ");
 
     while (i < this.recipes.length) {
       const recipe = this.recipes[i];
@@ -28,7 +29,7 @@ class Search {
       const recipeDescription = this.removeAccents(recipe.description).toLowerCase();
 
       if (
-        searchWords.every(word => // chaque mot doit être présent dans l'un des champs
+        searchWords.every(word =>
           recipeName.includes(word) ||
           recipeIngredients.includes(word) ||
           recipeDescription.includes(word)
@@ -38,6 +39,7 @@ class Search {
       }
       i++;
     }
+    this.filteredRecipes = filteredRecipes.length > 0 ? filteredRecipes : null;
     return filteredRecipes;
   }
 
@@ -53,11 +55,11 @@ class Search {
   /**
    * Recherche par tags
    * @param {*} items 
-   * @param {*} recipes 
    * @returns 
    */
-  searchByItems(items, recipes) {
-    return recipes.filter((recipe) => {
+  searchByItems(items) {
+    const recipesToSearch = this.filteredRecipes || this.recipes;
+    return recipesToSearch.filter((recipe) => {
       return items.every(item => {
         const lowerCaseItem = item.toLowerCase();
         const { name, ingredients, description } = recipe;
@@ -65,7 +67,6 @@ class Search {
           name.toLowerCase().includes(lowerCaseItem) ||
           ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(lowerCaseItem)) ||
           description.toLowerCase().includes(lowerCaseItem)
-          
         );
       });
     });
@@ -80,12 +81,12 @@ class Search {
   searchInDropdown(searchString, items) {
     const filteredItems = [];
     searchString = this.removeAccents(searchString).toLowerCase();
-    const searchWords = searchString.split(" "); // diviser searchString en mots individuels
+    const searchWords = searchString.split(" ");
 
     if (!this.originalItems) {
       this.originalItems = [...items];
     }
-    
+
     items.forEach(item => {
       const itemName = this.removeAccents(item).toLowerCase();
 
