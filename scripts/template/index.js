@@ -13,7 +13,7 @@ class RecipeCard {
     card.setAttribute('data-id', this.recipe.id);
 
     const recipeCard = `
-      <div class="card justify-content-center">
+      <div class="card justify-content-center" tabindex="1">
         <img src="http://via.placeholder.com/380x178.png?text" class="card-img-top" alt="image de description">
         <div class="card-body">
           <div class="card-title row">

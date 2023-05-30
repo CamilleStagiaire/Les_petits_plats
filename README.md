@@ -38,6 +38,8 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Création d'une 2ème branche GitHub
 
+* tests de performance jsbench.me/
+
 * Fiche d'investigation 
 
 * Gérer l'accessibilité du site (lecteur d'écran et clavier)

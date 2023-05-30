@@ -10,7 +10,6 @@ class App {
    * @param {Array<Recipe>} recipes - Tableau des recettes
    */
   constructor(recipes) {
-
     this.recipes = recipes;
     this.search = new Search(this.recipes);
     this.ingredientsDropdown = null;
@@ -20,8 +19,6 @@ class App {
     this.selectedItems = [];
     this.lastSearchString = "";
     this.searchInput = document.querySelector('.search-input');
-
-
   }
 
   async main() {
@@ -54,22 +51,24 @@ class App {
       }
     });
 
-    // Mettre à jour les recettes affichées en fonction de la recherche
+    // Mettre à jour les recettes en fonction de la recherche dans la barre principale
     const searchInput = document.getElementById("search");
     searchInput.addEventListener("input", () => {
       const searchString = searchInput.value;
       this.updateRecipes(searchString);
     });
 
+    // Mettre à jour les recettes en fonction de la recherche par tags
     document.addEventListener('dropdownItemSelected', (event) => {
-      setTimeout(() => {
+     // setTimeout(() => {
         this.updateRecipes(document.querySelector(".search-input").value, event.detail);
         this.searchInput.focus();
-      }, 0);
+     // }, 0);
     });
 
+    // Mettre à jour les recettes en fonction de la suppression de tags
     document.addEventListener('buttonItemSelected', (event) => {
-      setTimeout(() => {
+     // setTimeout(() => {
         const selectedItem = event.detail;
         const index = this.selectedItems.indexOf(selectedItem);
         if (index > -1) {
@@ -77,8 +76,22 @@ class App {
         }
         this.searchInput.focus();
         this.updateRecipes(document.getElementById("search").value);
-      }, 0);
+
     });
+
+    document.querySelectorAll('.container-dropdown-btn').forEach(element => {
+      element.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              dropdownInstances.ingredientsDropdown;
+              dropdownInstances.ustensilsDropdown;
+              dropdownInstances.appliancesDropdown;
+          
+              console.log('ee');
+              this.click();
+          }
+      });
+  });
   }
 
   /**
@@ -92,7 +105,6 @@ class App {
       const card = recipeCard.createRecipeCard();
       container.appendChild(card);
     });
-
   }
 
   /**

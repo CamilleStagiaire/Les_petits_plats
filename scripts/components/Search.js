@@ -44,15 +44,6 @@ class Search {
   }
 
   /**
-   * Supprimer les accents 
-   * @param {string} str 
-   * @returns {string}
-   */
-  removeAccents(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-
-  /**
    * Recherche par tags
    * @param {*} items 
    * @returns 
@@ -95,6 +86,15 @@ class Search {
       }
     });
     return filteredItems;
+  }
+  
+ /**
+   * Supprimer les accents 
+   * @param {string} str 
+   * @returns {string}
+   */
+  removeAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 }
 

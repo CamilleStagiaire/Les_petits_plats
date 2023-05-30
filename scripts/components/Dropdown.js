@@ -15,6 +15,7 @@ class Dropdown {
     this.selectedItems = [];
     this.search = search;
     this.updatedItems = [...items];
+    this.hiddenItems = [];
 
     this.toggle = this.element.querySelector('.dropdown-toggle');
     this.chevron = this.toggle.querySelector('.bi');
@@ -137,24 +138,25 @@ class Dropdown {
    * @param {*} item 
    * @param {*} dropdown
    */
-  onSelectItem(item, dropdownItem) {
+  onSelectItem(item) {
     const event = new CustomEvent('dropdownItemSelected', { detail: item });
     document.dispatchEvent(event);
-    dropdownItem.classList.add('hidden');
+    this.hiddenItems.push(item);
+
+    //  ajouter la classe 'hidden'
+    for (let i = 0; i < this.dropdownItems.length; i++) {
+        if (this.dropdownItems[i].textContent === item) {
+            this.dropdownItems[i].classList.add('hidden');
+            break;
+        }
+    }
     this.selectedItem = item;
-
     const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
-      const otherEvent = new CustomEvent('buttonItemSelected', { detail: item });
-      document.dispatchEvent(otherEvent);
-      dropdownItem.classList.remove('hidden');
-
-      // Supprimer le bouton et le retirer du tableau selectedItems
-      this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
-      this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
-      this.selectedItem = null;
-
-      dropdownItem.classList.remove('hidden');
-
+        const otherEvent = new CustomEvent('buttonItemSelected', { detail: item });
+        document.dispatchEvent(otherEvent);
+        this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
+        this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
+        this.selectedItem = null;
     }, this.element);
   }
 
@@ -167,13 +169,12 @@ class Dropdown {
     list.innerHTML = "";
     this.items = items;
     this.updatedItems = [...items];
+    this.dropdownItems = [];
     items.forEach(item => {
-      const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
-      const listItem = dropdownItem.createDropdownItem();
-      if (item === this.selectedItem) {
-        listItem.classList.add('hidden');
-      }
-      list.appendChild(listItem);
+        const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
+        const listItem = dropdownItem.createDropdownItem();
+        this.dropdownItems.push(listItem);
+        list.appendChild(listItem);
     });
   }
 }
