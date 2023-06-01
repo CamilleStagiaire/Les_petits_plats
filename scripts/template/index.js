@@ -1,4 +1,8 @@
 class RecipeCard {
+
+  /**
+   * @param {*} recipe 
+   */
   constructor(recipe) {
     this.recipe = recipe;
   }
@@ -9,11 +13,11 @@ class RecipeCard {
    */
   createRecipeCard() {
     const card = document.createElement('article');
-    card.classList.add('article', 'col-md-6', 'col-lg-4', 'gx-5');
+    card.classList.add('article', 'col-md-6', 'col-lg-4', 'gx-5', 'accessibility');
     card.setAttribute('data-id', this.recipe.id);
-
+    
     const recipeCard = `
-      <div class="card justify-content-center" tabindex="1">
+      <div class="card justify-content-center">
         <img src="http://via.placeholder.com/380x178.png?text" class="card-img-top" alt="image de description">
         <div class="card-body">
           <div class="card-title row">
@@ -45,6 +49,8 @@ class RecipeCard {
       </div>
     `
     card.innerHTML = recipeCard
+    card.setAttribute('tabindex', '1');
+
     return card;
   }
 }

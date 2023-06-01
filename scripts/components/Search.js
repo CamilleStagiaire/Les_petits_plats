@@ -10,9 +10,9 @@ class Search {
   }
 
   /**
-   * Recherche dans la barre de recherche
+   * Recherche dans la barre principale
    * @param {string} searchString 
-   * @returns {Array} -  recettes filtrée
+   * @returns {Array}
    */
   search(searchString) {
     const filteredRecipes = [];
@@ -45,8 +45,8 @@ class Search {
 
   /**
    * Recherche par tags
-   * @param {*} items 
-   * @returns 
+   * @param {Array} items
+   * @returns {Array}
    */
   searchByItems(items) {
     const recipesToSearch = this.filteredRecipes || this.recipes;
@@ -65,8 +65,8 @@ class Search {
 
   /**
     * Recherche de tags dans les drodowns
-    * @param {string} searchString 
-    * @param {Array} items 
+    * @param {string} searchString
+    * @param {Array} items
     * @returns {Array}
     */
   searchInDropdown(searchString, items) {
@@ -87,12 +87,12 @@ class Search {
     });
     return filteredItems;
   }
-  
- /**
-   * Supprimer les accents 
-   * @param {string} str 
-   * @returns {string}
-   */
+
+  /**
+    * Supprimer les accents 
+    * @param {string} str
+    * @returns {string}
+    */
   removeAccents(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }

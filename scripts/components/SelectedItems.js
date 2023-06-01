@@ -1,10 +1,10 @@
 class SelectedItems {
   /**
-   * @param {string} item - L'élément sélectionné
-   * @param {HTMLElement} selectedItemsContainer - conteneur des éléments 
-   * @param {Array} selectedItems - liste des éléments sélectionnés
-   * @param {function} onSelect - fonction appelée lorsque l'élément est supprimé
-   * @param {string} color - La couleur à appliquer au bouton d'élément sélectionné
+   * @param {string} item
+   * @param {HTMLElement} selectedItemsContainer
+   * @param {Array} selectedItems
+   * @param {function} onSelect
+   * @param {string} color
    */
   constructor(item, selectedItemsContainer, selectedItems, onSelect, element) {
     this.item = item;
@@ -31,7 +31,7 @@ class SelectedItems {
 
   /**
    * Crée un élément
-   * @returns {HTMLElement} - Le bouton de l'élément sélectionné
+   * @returns {HTMLElement}
    */
   createSelectedItem() {
     const selectedItem = document.createElement('button');
@@ -45,9 +45,17 @@ class SelectedItems {
     icon.classList.add('bi', 'bi-x-circle', 'ms-1', 'created-icon');
     icon.setAttribute('data-value', this.item)
     selectedItem.appendChild(icon);
-    icon.addEventListener('click', (e) => {
-      e.stopPropagation(); // Empêche la propagation de l'événement au bouton
+
+    selectedItem.addEventListener('click', (e) => {
+      e.stopPropagation();
       this.onSelect(this.item);
+    });
+    selectedItem.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.onSelect(this.item);
+      }
     });
 
     this.selectedItemsContainer.appendChild(selectedItem);

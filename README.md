@@ -36,13 +36,15 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Fonctionnalité de recherche de tags dans les dropdowns
 
+* Gérer l'accessibilité du site (lecteur d'écran et clavier)
+
 * Création d'une 2ème branche GitHub
 
 * tests de performance jsbench.me/
 
 * Fiche d'investigation 
 
-* Gérer l'accessibilité du site (lecteur d'écran et clavier)
+
 
 * Tests manuels
 

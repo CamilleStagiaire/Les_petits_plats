@@ -19,6 +19,7 @@ class App {
     this.selectedItems = [];
     this.lastSearchString = "";
     this.searchInput = document.querySelector('.search-input');
+
   }
 
   async main() {
@@ -51,8 +52,21 @@ class App {
       }
     });
 
+    recipeContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const recipeDisplay = e.target.closest('.article');
+        if (recipeDisplay) {
+          const recipeId = parseInt(recipeDisplay.getAttribute('data-id'));
+          const recipe = recipeObjects.find((r) => r.id === recipeId);
+          const display = new DisplayRecipe(recipe);
+          display.openModal();
+        }
+      }
+    });
+
     // Mettre à jour les recettes en fonction de la recherche dans la barre principale
     const searchInput = document.getElementById("search");
+    searchInput.setAttribute('tabindex', '1 ');
     searchInput.addEventListener("input", () => {
       const searchString = searchInput.value;
       this.updateRecipes(searchString);
@@ -60,38 +74,22 @@ class App {
 
     // Mettre à jour les recettes en fonction de la recherche par tags
     document.addEventListener('dropdownItemSelected', (event) => {
-     // setTimeout(() => {
-        this.updateRecipes(document.querySelector(".search-input").value, event.detail);
-        this.searchInput.focus();
-     // }, 0);
+      this.updateRecipes(document.querySelector(".search-input").value, event.detail);
+      this.searchInput.focus();
+      this.searchInput.value = '';
     });
 
     // Mettre à jour les recettes en fonction de la suppression de tags
     document.addEventListener('buttonItemSelected', (event) => {
-     // setTimeout(() => {
-        const selectedItem = event.detail;
-        const index = this.selectedItems.indexOf(selectedItem);
-        if (index > -1) {
-          this.selectedItems.splice(index, 1);
-        }
-        this.searchInput.focus();
-        this.updateRecipes(document.getElementById("search").value);
+      const selectedItem = event.detail;
+      const index = this.selectedItems.indexOf(selectedItem);
+      if (index > -1) {
+        this.selectedItems.splice(index, 1);
+      }
+      this.searchInput.focus();
+      this.updateRecipes(document.getElementById("search").value);
 
     });
-
-    document.querySelectorAll('.container-dropdown-btn').forEach(element => {
-      element.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              dropdownInstances.ingredientsDropdown;
-              dropdownInstances.ustensilsDropdown;
-              dropdownInstances.appliancesDropdown;
-          
-              console.log('ee');
-              this.click();
-          }
-      });
-  });
   }
 
   /**

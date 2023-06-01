@@ -14,7 +14,7 @@ class DropdownItem {
    */
   createDropdownItem() {
     const listItem = document.createElement('li');
-    listItem.classList.add('dropdown-item');
+    listItem.classList.add('dropdown-item' );
     listItem.textContent = this.item;
     listItem.setAttribute('data-value', this.item);
 
@@ -26,6 +26,11 @@ class DropdownItem {
     return listItem;
   }
 
+  /**
+   * Insère un élément dans l'ordre alphabétique
+   * @param {HTMLElement} parentElement 
+   * @param {HTMLElement} listItem 
+   */
   insertAlphabetic(parentElement, listItem) {
     const listItems = parentElement.querySelectorAll('li');
     const itemText = listItem.querySelector('.dropdown-item').textContent;
