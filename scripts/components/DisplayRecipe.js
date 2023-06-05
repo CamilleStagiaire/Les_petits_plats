@@ -62,18 +62,15 @@ class DisplayRecipe {
       setTabindex('.outside-modal .accessibility, .dropdown-toggle', '0');
     };
 
-   
     const closeButton = modal.querySelector('.close');
     closeButton.setAttribute('tabindex', '0');
     closeButton.focus();
 
-    
     closeButton.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') closeModal();
     });
 
     closeButton.addEventListener('click', closeModal);
-
     setTabindex('.outside-modal .accessibility', '-1');
 
   }

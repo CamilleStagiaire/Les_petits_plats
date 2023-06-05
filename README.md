@@ -44,8 +44,6 @@ https://github.com/CamilleStagiaire/FishEye.git
 
 * Fiche d'investigation 
 
-
-
 * Tests manuels
 
 * Revue de code + EsLint

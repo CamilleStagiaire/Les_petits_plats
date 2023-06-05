@@ -219,8 +219,7 @@ class Dropdown {
    * @param {*} items - Les items à insérer.
    */
   insertDropdown(items) {
-    const list = this.element.querySelector('.dropdown-menu');
-    list.innerHTML = "";
+    this.dropdownMenu.innerHTML = "";
     this.items = items;
     this.updatedItems = [...items];
     this.dropdownItems = [];
@@ -228,7 +227,7 @@ class Dropdown {
       const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
       const listItem = dropdownItem.createDropdownItem();
       this.dropdownItems.push(listItem);
-      list.appendChild(listItem);
+      this.dropdownMenu.appendChild(listItem);
     });
   }
 }
