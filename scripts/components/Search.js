@@ -15,30 +15,23 @@ class Search {
    * @returns {Array}
    */
   search(searchString) {
-    const filteredRecipes = [];
-    let i = 0;
     searchString = this.removeAccents(searchString).toLowerCase();
     const searchWords = searchString.split(" ");
 
-    while (i < this.recipes.length) {
-      const recipe = this.recipes[i];
+    const filteredRecipes = this.recipes.filter(recipe => {
       const recipeName = this.removeAccents(recipe.name).toLowerCase();
       const recipeIngredients = recipe.ingredients
         .map((ingredient) => this.removeAccents(ingredient.ingredient).toLowerCase())
         .join(" ");
       const recipeDescription = this.removeAccents(recipe.description).toLowerCase();
 
-      if (
-        searchWords.every(word =>
-          recipeName.includes(word) ||
-          recipeIngredients.includes(word) ||
-          recipeDescription.includes(word)
-        )
-      ) {
-        filteredRecipes.push(recipe);
-      }
-      i++;
-    }
+      return searchWords.every(word =>
+        recipeName.includes(word) ||
+        recipeIngredients.includes(word) ||
+        recipeDescription.includes(word)
+      );
+    });
+
     this.filteredRecipes = filteredRecipes.length > 0 ? filteredRecipes : null;
     return filteredRecipes;
   }
