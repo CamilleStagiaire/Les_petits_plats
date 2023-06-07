@@ -1,4 +1,8 @@
 class DisplayRecipe {
+
+  /**
+   * @param {Recipe} recipe 
+   */
   constructor(recipe) {
     this.recipe = recipe;
   }
@@ -36,18 +40,39 @@ class DisplayRecipe {
         `;
 
     document.body.appendChild(modal);
+
+    /**
+     * Définit l'attribut tabindex
+     * @param {string} selector 
+     * @param {string} value  
+     */
+    const setTabindex = (selector, value) => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach((element) => element.setAttribute('tabindex', value));
+    };
+
     setTimeout(() => {
       modal.classList.add('show');
+      setTabindex('.dropdown-item, .dropdown-toggle', '-1');
     }, 0);
 
-    const closeButton = modal.querySelector('.close');
-    closeButton.addEventListener('click', () => {
+    const closeModal = () => {
       modal.classList.remove('show');
-      //modal.classList.add('hide');
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 500);
+      setTimeout(() => document.body.removeChild(modal), 500);
+      setTabindex('.outside-modal .accessibility, .dropdown-toggle', '0');
+    };
+
+    const closeButton = modal.querySelector('.close');
+    closeButton.setAttribute('tabindex', '0');
+    closeButton.focus();
+
+    closeButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') closeModal();
     });
+
+    closeButton.addEventListener('click', closeModal);
+    setTabindex('.outside-modal .accessibility', '-1');
+
   }
 }
 

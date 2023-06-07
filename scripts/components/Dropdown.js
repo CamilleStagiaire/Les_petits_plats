@@ -1,15 +1,23 @@
 import { DropdownItem } from './DropdownItem.js';
 import { SelectedItems } from './SelectedItems.js';
+import { Search } from './Search.js';
 
 class Dropdown {
 
   /**
    * @param {HTMLElement} element
-   * @param {Array} items - éléments du menu déroulant
+   * @param {Array} items
+   * @param {Search} search 
    */
-  constructor(element, items = []) {
+  constructor(element, items = [], search) {
     this.element = element;
     this.items = items;
+    this.selectedItem = null;
+    this.selectedItems = [];
+    this.search = search;
+    this.updatedItems = [...items];
+    this.hiddenItems = [];
+
     this.toggle = this.element.querySelector('.dropdown-toggle');
     this.chevron = this.toggle.querySelector('.bi');
     this.searchInput = this.element.querySelector('.search-input');
@@ -17,10 +25,12 @@ class Dropdown {
     this.containerDropdown = this.element.closest(".container-dropdown");
     this.appareilsButton = document.getElementById('appareilsButton').closest('.container-dropdown-btn');
     this.ustensilesButton = document.getElementById('ustensilesButton').closest('.container-dropdown-btn');
-
     this.selectedItemsContainer = document.querySelector('.container-selected');
-    this.selectedItems = [];
+    this.dropdownMenu = this.element.querySelector('.dropdown-menu');
 
+    /**
+     *  @param {Array} items
+     */
     this.insertDropdown(items);
     this.onChangeDropdown();
   }
@@ -28,33 +38,56 @@ class Dropdown {
   /**
    * @param {*} ingredients 
    * @param {*} ustensils 
-   * @param {*} appliances 
+   * @param {*} appliances
+   * @returns {Object}
    */
-  static initDropdowns(ingredients, ustensils, appliances) {
+  static initDropdowns(ingredients, appliances, ustensils) {
     const ingredientsDropdown = document.getElementById('ingredients-dropdown');
-    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
     const appliancesDropdown = document.getElementById('appareils-dropdown');
-    new Dropdown(ingredientsDropdown, ingredients);
-    new Dropdown(ustensilsDropdown, ustensils);
-    new Dropdown(appliancesDropdown, appliances);
+    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
+
+    const search = new Search();
+
+    return {
+      ingredientsDropdown: new Dropdown(ingredientsDropdown, ingredients, search),
+      appliancesDropdown: new Dropdown(appliancesDropdown, appliances, search),
+      ustensilsDropdown: new Dropdown(ustensilsDropdown, ustensils, search),
+    };
   }
 
   /**
-   * mise à jour du bouton de dropdown
+   * Mise à jour du bouton de dropdown
    * @param {string} icon - classe de l'icône à afficher
    * @param {string} text - texte à afficher
    * @param {string} display - valeur de la propriété CSS "display" pour afficher ou masquer l'input 
    */
   updateButton(icon, text, display) {
-    this.chevron.classList.remove('bi-chevron-down', 'bi-chevron-up');
-    this.chevron.classList.add(icon);
+    this.chevron.className = `bi ${icon}`;
     this.toggle.childNodes[0].nodeValue = text;
     this.searchInput.style.display = display;
   }
 
   /**
-   * Gère l'état d'ouverture / fermeture des dropdowns
-   * @returns {boolean}
+   * Définit la valeur de l'attribut tabindex pour tous les éléments du dropdown
+   * @param {number} value - valeur de l'attribut tabindex
+   */
+  setDropdownItemsTabindex(value) {
+    this.dropdownItems.forEach(item => item.setAttribute('tabindex', value));
+  }
+
+  // supprimer l'état actif du dropdown
+  removeActive() {
+    this.dropdownMenu.classList.remove("show")
+    this.updateButton('bi-chevron-down', this.defaultText, 'none');
+    this.toggle.classList.remove('active');
+    this.setButtonStyles(false);
+    this.containerDropdown.classList.remove('active');
+    this.setDropdownItemsTabindex('-1');
+  }
+
+  /**
+   * Gère l'état du dropdown.
+   * @returns {boolean}- Indique si le dropdown actif
    */
   dropdownStatus() {
     const isActive = this.toggle.classList.contains('active');
@@ -69,39 +102,34 @@ class Dropdown {
         dropdown.querySelector('.search-input').style.display = 'none';
         const defaultText = dropdown.getAttribute('data-text');
         dropdown.childNodes[0].nodeValue = defaultText;
-        this.resetStyles();
+        dropdown.setAttribute('tabindex', '-1');
+        this.setButtonStyles(false);
       });
     }
 
     if (isActive) {
-      this.updateButton('bi-chevron-down', this.defaultText, 'none');
-      this.containerDropdown.classList.remove('active');
-      this.resetStyles();
+      this.removeActive();
     } else {
       this.updateButton('bi-chevron-up', '', 'inline-block');
       this.toggle.classList.add('active');
       this.searchInput.focus();
       this.containerDropdown.classList.add('active');
-      this.applyStyles();
+      this.setButtonStyles(true);
+      this.toggle.setAttribute('tabindex', '0');
+      this.setDropdownItemsTabindex('0');
     }
+
     return !isActive;
   }
 
-
-  // applique les styles aux boutons
-  applyStyles() {
-    if (this.element.id === 'ingredients-dropdown') {
-      this.appareilsButton.classList.add('margins');
-    } else if (this.element.id === 'appareils-dropdown') {
-      this.ustensilesButton.classList.add('margins');
-    }
-  }
-
-  // réinitialise les styles initianx des boutons
-  resetStyles() {
-    this.appareilsButton.classList.remove('margins');
-    this.ustensilesButton.classList.remove('margins');
-
+  /**
+   * Définit les styles des boutons
+   * @param {boolean} [apply=false] 
+   */
+  setButtonStyles(apply = false) {
+    const { id } = this.element;
+    this.appareilsButton.classList.toggle('margins', apply && id === 'ingredients-dropdown');
+    this.ustensilesButton.classList.toggle('margins', apply && id === 'appareils-dropdown');
   }
 
   // gère les événements associés au menu déroulant
@@ -111,96 +139,95 @@ class Dropdown {
       this.dropdownStatus();
     });
 
+    //  Navigation clavier
+    this.toggle.setAttribute('tabindex', '1');
+    this.toggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.dropdownStatus();
+        this.dropdownMenu.classList.add("show");
+      }
+    });
+
     // Gère le clic en dehors du dropdown
     document.addEventListener('click', (e) => {
       if (!this.containerDropdown.contains(e.target)) {
         this.updateButton('bi-chevron-down', this.defaultText, 'none');
         this.toggle.classList.remove('active');
-        this.resetStyles();
+        this.setButtonStyles(false);
       }
     });
 
-    // Gère la fermeture du dropdown lors du clic sur un élément du menu déroulant ou sur le champ de recherche
-    this.containerDropdown.addEventListener('hide.bs.dropdown', (event) => {
-      if (event.clickEvent && (event.clickEvent.target.classList.contains('dropdown-item') || this.searchInput.contains(event.clickEvent.target))) {
-        event.preventDefault();
-        event.stopPropagation();
+    // Navigation clavier
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'Escape')) {
+        this.removeActive();
       }
     });
 
-    // Gère l'affichage du dropdown et ferme les autres dropdowns ouverts
-    this.containerDropdown.addEventListener('show.bs.dropdown', () => {
-      const otherDropdowns = document.querySelectorAll('.dropdown.show');
-      otherDropdowns.forEach(dropdown => {
-        if (dropdown !== this.containerDropdown) {
-          let bsDropdown = new bootstrap.Dropdown(dropdown.querySelector('.dropdown-toggle'));
-          bsDropdown.hide();
-        }
-      });
+    // Recherche dans les dropdowns
+    this.searchInput.addEventListener('input', (e) => {
+      const searchString = e.target.value;
+      if (searchString.length > 0) {
+        const searchResults = this.search.searchInDropdown(searchString, this.items);
+        this.items = searchResults;
+        this.insertDropdown(searchResults);
+        this.setDropdownItemsTabindex('0');
+      } else {
+        this.items = [...this.search.originalItems];
+        this.insertDropdown(this.items);
+      }
+    });
+
+    // Gestion du keydown sur les éléments de la liste déroulante
+    this.dropdownMenu.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter') && e.target.classList.contains('dropdown-item')) {
+        e.preventDefault();
+        this.onSelectItem(e.target.textContent);
+      }
     });
   }
 
   /**
-   * Gère la sélection d'un élément dans le menu déroulant
+   * Gère la sélection d'un tag dans le menu déroulant
    * @param {*} item - L'élément sélectionné
-   * @param {*} dropdown - Le dropdown sélectionné
    */
-  onSelectItem(item, dropdown) {
-    /**
-     * Ajoute un élément dans une liste déroulante en ordre alphabétique
-     * @param {*} parentElement - l'élément parent de la liste déroulante
-     * @param {*} listItem - l'élément à ajouter
-     */
-    function alphabeticOrder(parentElement, listItem) {
-      const listItems = parentElement.querySelectorAll('li');
-      const itemText = listItem.querySelector('.dropdown-item').textContent;
+  onSelectItem(item) {
+    const event = new CustomEvent('dropdownItemSelected', { detail: item });
+    document.dispatchEvent(event);
+    this.hiddenItems.push(item);
 
-      for (let i = 0; i < listItems.length; i++) {
-        const currentItemText = listItems[i].querySelector('.dropdown-item').textContent;
-
-        if (itemText.localeCompare(currentItemText) < 0) {
-          parentElement.insertBefore(listItem, listItems[i]);
-          return;
-        }
+    //  ajouter la classe 'hidden'
+    for (let i = 0; i < this.dropdownItems.length; i++) {
+      if (this.dropdownItems[i].textContent === item) {
+        this.dropdownItems[i].classList.add('hidden');
+        break;
       }
-      parentElement.appendChild(listItem);
     }
-
-    const ingredientsDropdown = document.getElementById('ingredients-dropdown');
-    const ustensilsDropdown = document.getElementById('ustensiles-dropdown');
-    const appliancesDropdown = document.getElementById('appareils-dropdown');
-    const dropdownItem = dropdown.querySelector(`.dropdown-item[data-value="${item}"]`);
-
-    let color = "";
-    if (this.element === ingredientsDropdown) {
-      color = "primary";
-    } else if (this.element === appliancesDropdown) {
-      color = "success";
-    } else if (this.element === ustensilsDropdown) {
-      color = "danger";
-    }
-
+    this.selectedItem = item;
     const selectedItem = new SelectedItems(item, this.selectedItemsContainer, this.selectedItems, () => {
-      // Supprimer le bouton et le retirer du tableau selectedItems
+      const otherEvent = new CustomEvent('buttonItemSelected', { detail: item });
+      document.dispatchEvent(otherEvent);
       this.selectedItemsContainer.removeChild(selectedItem.selectedItem);
       this.selectedItems.splice(this.selectedItems.indexOf(selectedItem.item), 1);
-
-      // Réintégrer le <li> dans la liste déroulante par ordre alphabétique
-      alphabeticOrder(dropdown.querySelector('.dropdown-menu'), dropdownItem.parentNode);
-    }, color);
+      this.selectedItem = null;
+    }, this.element);
   }
 
-
   /**
-   * Insère les éléments du menu déroulant
-   * @param {*} items - Les éléments à insérer dans le menu déroulant
+   * Insère les tags du menu déroulant
+   * @param {*} items - Les items à insérer.
    */
   insertDropdown(items) {
-    const list = this.element.querySelector('.dropdown-menu');
+    this.dropdownMenu.innerHTML = "";
+    this.items = items;
+    this.updatedItems = [...items];
+    this.dropdownItems = [];
     items.forEach(item => {
       const dropdownItem = new DropdownItem(item, this.onSelectItem.bind(this));
       const listItem = dropdownItem.createDropdownItem();
-      list.appendChild(listItem);
+      this.dropdownItems.push(listItem);
+      this.dropdownMenu.appendChild(listItem);
     });
   }
 }

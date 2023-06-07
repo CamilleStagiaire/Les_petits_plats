@@ -10725,6 +10725,10 @@ body {
   font-family: "Lato", sans-serif;
 }
 
+.hidden {
+  display: none;
+}
+
 .logo {
   width: 268px;
   height: 93px;
@@ -10809,14 +10813,13 @@ body {
 .container-dropdown-btn {
   width: 33%;
 }
-.container-dropdown button {
+.container-dropdown .dropdown-toggle {
+  padding-top: 20px;
   text-align: left;
   font-weight: bold;
   height: 69px;
   width: 170px;
   font-size: 18px;
-}
-.container-dropdown .dropdown-toggle {
   position: relative;
   background-color: #3282F7;
 }
@@ -10914,6 +10917,8 @@ body {
   }
 }
 .dropdown-menu.show li {
+  cursor: pointer;
+  color: white;
   width: 100%;
   box-sizing: border-box;
 }
@@ -10927,11 +10932,8 @@ body {
     width: 33.3333333333%;
   }
 }
-.dropdown-menu.show a {
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.dropdown-menu.show li:hover {
+  color: black;
 }
 .dropdown-toggle {
   transition: width 0.3s;
