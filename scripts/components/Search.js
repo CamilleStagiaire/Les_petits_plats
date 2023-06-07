@@ -15,6 +15,7 @@ class Search {
    * @returns {Array}
    */
   search(searchString) {
+    console.time("search2") 
     searchString = this.removeAccents(searchString).toLowerCase();
     const searchWords = searchString.split(" ");
 
@@ -31,8 +32,8 @@ class Search {
         recipeDescription.includes(word)
       );
     });
-
     this.filteredRecipes = filteredRecipes.length > 0 ? filteredRecipes : null;
+    console.timeEnd("search2")
     return filteredRecipes;
   }
 
