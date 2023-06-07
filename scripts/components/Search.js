@@ -15,6 +15,7 @@ class Search {
    * @returns {Array}
    */
   search(searchString) {
+    console.time("search1");
     const filteredRecipes = [];
     let i = 0;
     searchString = this.removeAccents(searchString).toLowerCase();
@@ -40,6 +41,7 @@ class Search {
       i++;
     }
     this.filteredRecipes = filteredRecipes.length > 0 ? filteredRecipes : null;
+    console.timeEnd("search1");
     return filteredRecipes;
   }
 
