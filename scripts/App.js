@@ -151,4 +151,8 @@ class App {
 }
 
 const app = new App(recipes);
+<<<<<<< HEAD
 app.main();
+=======
+app.main();
+>>>>>>> b880863182379d876cccca831ea02e07b514370e
