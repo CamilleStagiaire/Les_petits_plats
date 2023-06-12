@@ -1,7 +1,7 @@
 class RecipeCard {
 
   /**
-   * @param {*} recipe 
+   * @param {Object} recipe
    */
   constructor(recipe) {
     this.recipe = recipe;

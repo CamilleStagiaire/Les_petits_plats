@@ -1,4 +1,4 @@
-import { Recipe, Ingredient } from "./models/Recipe.js";
+import { Recipe } from "./models/Recipe.js";
 import { RecipeCard } from "./template/index.js";
 import { DisplayRecipe } from "./components/DisplayRecipe.js";
 import { Dropdown } from "./components/Dropdown.js";
@@ -12,6 +12,7 @@ class App {
   constructor(recipes) {
     this.recipes = recipes;
     this.search = new Search(this.recipes);
+    this.search.prepareRecipes();
     this.ingredientsDropdown = null;
     this.ustensilsDropdown = null;
     this.appliancesDropdown = null;
@@ -88,7 +89,6 @@ class App {
       }
       this.searchInput.focus();
       this.updateRecipes(document.getElementById("search").value);
-
     });
   }
 
@@ -142,7 +142,7 @@ class App {
     const container = document.getElementById("recipe-container");
     container.innerHTML = "";
     this.displayRecipes(filteredRecipes);
-    console.log(filteredRecipes.length);
+    console.log("Nombre de recettes (filter) : " + filteredRecipes.length);
 
     if (filteredRecipes.length === 0) {
       container.innerHTML = "Aucune recette ne correspond à votre critère…";

@@ -1,12 +1,25 @@
 class Search {
 
   /**
-   * @param {*} recipes 
+   * @param {Array} recipes 
    */
   constructor(recipes) {
     this.recipes = recipes;
     this.originalItems = null;
     this.filteredRecipes = null;
+  }
+
+  prepareRecipes() {
+    this.recipes = this.recipes.map(recipe => {
+      const name = this.removeAccents(recipe.name).toLowerCase();
+      const description = this.removeAccents(recipe.description).toLowerCase();
+      const ingredients = recipe.ingredients.map(ingredient => ({
+        ...ingredient,
+        ingredient: this.removeAccents(ingredient.ingredient).toLowerCase()
+      }));
+      let combinedText = name + " " + description + " " + ingredients.map(ingredient => ingredient.ingredient).join(" ");
+      return { ...recipe, name, description, ingredients, combinedText };
+    });
   }
 
   /**
@@ -15,25 +28,19 @@ class Search {
    * @returns {Array}
    */
   search(searchString) {
-    console.time("search2") 
+    console.time("filter");
     searchString = this.removeAccents(searchString).toLowerCase();
     const searchWords = searchString.split(" ");
 
     const filteredRecipes = this.recipes.filter(recipe => {
-      const recipeName = this.removeAccents(recipe.name).toLowerCase();
-      const recipeIngredients = recipe.ingredients
-        .map((ingredient) => this.removeAccents(ingredient.ingredient).toLowerCase())
-        .join(" ");
-      const recipeDescription = this.removeAccents(recipe.description).toLowerCase();
+      const combinedText = recipe.combinedText;
 
-      return searchWords.every(word =>
-        recipeName.includes(word) ||
-        recipeIngredients.includes(word) ||
-        recipeDescription.includes(word)
-      );
+      return searchWords.every(word => combinedText.includes(word));
     });
+    
+    console.timeEnd("filter");
     this.filteredRecipes = filteredRecipes.length > 0 ? filteredRecipes : null;
-    console.timeEnd("search2")
+
     return filteredRecipes;
   }
 

@@ -9,16 +9,7 @@ class Recipe {
    * @param {string} appliance 
    * @param {Array<string>} ustensils 
    */
-  constructor(
-    id,
-    name,
-    servings,
-    ingredients,
-    time,
-    description,
-    appliance,
-    ustensils
-  ) {
+  constructor( id, name, servings, ingredients, time, description, appliance, ustensils) {
     this.id = id;
     this.name = name;
     this.servings = servings;

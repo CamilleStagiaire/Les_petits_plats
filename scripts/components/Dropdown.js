@@ -36,9 +36,9 @@ class Dropdown {
   }
 
   /**
-   * @param {*} ingredients 
-   * @param {*} ustensils 
-   * @param {*} appliances
+   * @param {Array} ingredients 
+   * @param {Array} ustensils 
+   * @param {Array} appliances
    * @returns {Object}
    */
   static initDropdowns(ingredients, appliances, ustensils) {
@@ -190,7 +190,7 @@ class Dropdown {
 
   /**
    * Gère la sélection d'un tag dans le menu déroulant
-   * @param {*} item - L'élément sélectionné
+   * @param {string} item - L'élément sélectionné
    */
   onSelectItem(item) {
     const event = new CustomEvent('dropdownItemSelected', { detail: item });
@@ -216,7 +216,7 @@ class Dropdown {
 
   /**
    * Insère les tags du menu déroulant
-   * @param {*} items - Les items à insérer.
+   * @param {Array.<string>} items - Les items à insérer.
    */
   insertDropdown(items) {
     this.dropdownMenu.innerHTML = "";
