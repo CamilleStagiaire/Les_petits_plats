@@ -14,7 +14,7 @@ class DropdownItem {
    */
   createDropdownItem() {
     const listItem = document.createElement('li');
-    listItem.classList.add('dropdown-item' );
+    listItem.classList.add('dropdown-item');
     listItem.textContent = this.item;
     listItem.setAttribute('data-value', this.item);
 
