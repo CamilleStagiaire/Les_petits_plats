@@ -65,10 +65,18 @@ class Search {
     const recipesToSearch = this.filteredRecipes || this.recipes;
     return recipesToSearch.filter((recipe) => {
       return items.every(item => {
-        const formattedItem = this.removeAccents(item.toLowerCase());
-        const combinedText = recipe.combinedText;;
+        const lowerCaseItem = item.toLowerCase();
+        const { name, ingredients, description, appliance, ustensils } = recipe;
+        const itemInUstensils = ustensils.some(ustensil => ustensil.toLowerCase().includes(lowerCaseItem));
+        const itemInAppliance = appliance.toLowerCase().includes(lowerCaseItem);
 
-        return combinedText.includes(formattedItem);
+        return (
+          name.toLowerCase().includes(lowerCaseItem) ||
+          ingredients.some((ingredient) => ingredient.ingredient.toLowerCase().includes(lowerCaseItem)) ||
+          description.toLowerCase().includes(lowerCaseItem) ||
+          itemInUstensils ||
+          itemInAppliance
+        );
       });
     });
   }
