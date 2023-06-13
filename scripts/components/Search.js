@@ -18,7 +18,7 @@ class Search {
         ingredient: this.removeAccents(ingredient.ingredient).toLowerCase()
       }));
       let combinedText = nameNoAccent + " " + descriptionNoAccent + " " + ingredientsNoAccent.map(ingredient => ingredient.ingredient).join(" ");
-      return { ...recipe, nameNoAccent, descriptionNoAccent, ingredientsNoAccent, combinedText };
+      return { ...recipe, combinedText };
     });
   }
 
